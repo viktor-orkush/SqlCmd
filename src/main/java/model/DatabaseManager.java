@@ -1,14 +1,16 @@
-package controler;
+package model;
 
 /**
  * Created by Viktor on 11.08.2017.
  */
 public interface DatabaseManager {
-    String[] getListTable();
+    void connect(String database, String user, String password);
+
+    String[] getListTables();
 
     void clear(String tableName);
 
-    void create(DataSet input);
+    void create(String tableName, DataSet input);
 
     DataSet[] getTableData(String tableName);
 

@@ -1,5 +1,8 @@
 package controler;
 
+import model.DataSet;
+import model.DatabaseManager;
+import model.JDBCDatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,16 +12,17 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 public class JDBCDatabaseManagerTest {
-    JDBCDatabaseManager maneger;
+    DatabaseManager maneger;
+
     @Before
     public void setup(){
-        maneger = new JDBCDatabaseManager("sqlcmd", "admin", "admin");
+        maneger = new JDBCDatabaseManager();
+        maneger.connect("sqlcmd", "admin", "admin");
     }
-
 
     @Test
     public void getListTableTest() throws SQLException, ClassNotFoundException {
-        String[] listTable = maneger.getListTable();
+        String[] listTable = maneger.getListTables();
         String actual = Arrays.toString(listTable);
         System.out.println(Arrays.toString(listTable));
         assertEquals("[test, users]", actual);
@@ -34,7 +38,7 @@ public class JDBCDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create(input);
+        maneger.create("users", input);
 
         //then
         DataSet[] dataTable = maneger.getTableData("users");
@@ -53,7 +57,7 @@ public class JDBCDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create(input);
+        maneger.create("users", input);
 
         //when
         DataSet newValue = new DataSet();

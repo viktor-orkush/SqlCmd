@@ -1,57 +1,33 @@
-package controler;
+package model;
+
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.util.Arrays;
 
-class Main{
-    public static void main(String[] args) {
-        JDBCDatabaseManager maneger = new JDBCDatabaseManager("sqlcmd", "admin", "admin");
-
-        //given
-        maneger.clear("users");
-
-        //when
-        DataSet input = new DataSet();
-        input.put("id", "13");
-        input.put("name", "Victor");
-        input.put("password", "123");
-        maneger.create(input);
-
-        DataSet newValue = new DataSet();
-        newValue.put("name", "Victor");
-        newValue.put("password", "passNew");
-        maneger.update("users", 13, newValue);
-
-        DataSet[] data = maneger.getTableData("users");
-        System.out.println(data[0].toString());
-    }
-}
-
 public class JDBCDatabaseManager implements DatabaseManager {
-    Connection connect;
+    private Connection connect;
 
-    public JDBCDatabaseManager(String database, String user, String password) {
-        getConnection(database, user, password);
-    }
+    /*public JDBCDatabaseManager(String database, String user, String password) {
+        connect(database, user, password);
+    }*/
 
-    private void getConnection(String database, String user, String password) {
+    public void connect(String database, String user, String password) {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println("Pleas add jdbc jar driver to project");
-            e.printStackTrace();
+            throw new RuntimeException("Pleas add jdbc jar driver to project", e);
         }
         try {
             connect = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/" + database, user, password);
         } catch (SQLException e) {
-            System.out.println("Cont get connection from database");
-            e.printStackTrace();
             connect = null;
+            throw new RuntimeException(String.format("Cont get connection for model: %s, user: %s", database, user), e);
         }
     }
 
     @Override
-    public String[] getListTable() {
+    public String[] getListTables() {
         try{
             Statement stmt = connect.createStatement();
             String sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_type = 'BASE TABLE'";
@@ -85,7 +61,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(DataSet input) {
+    public void create(String tableName, DataSet input) {
         try {
             String[] arrHeaderTables= input.getNames();
 
@@ -93,7 +69,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
             String values = formatDS(input, "'%s',");
 
-            String sql = "INSERT INTO users ( "+ headerTable +" ) "
+            String sql = "INSERT INTO " + tableName + "( "+ headerTable +" ) "
                     + "VALUES (" + values + ");";
             PreparedStatement stmt = connect.prepareStatement(sql);
             stmt.executeUpdate();
