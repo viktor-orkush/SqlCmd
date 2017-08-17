@@ -152,6 +152,31 @@ public class JDBCDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Override
+    public String[] getTableHeader(String tableName) {
+        try{
+            Statement stmt = connect.createStatement();
+            String sql = "SELECT column_name" +
+                        " FROM information_schema.columns" +
+                        " WHERE table_name   = '"+ tableName + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            String[] columnArr = new String[10];
+            int index = 0;
+            while (rs.next()) {
+                String tableCol = rs.getString("column_name");
+                columnArr[index++] = tableCol;
+            }
+            columnArr = Arrays.copyOf(columnArr, index, String[].class);
+            rs.close();
+            stmt.close();
+            return columnArr;
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private String formaString(String[] inputString, String formatType) {
         String string ="";
         for (int i = 0; i < inputString.length; i++) {

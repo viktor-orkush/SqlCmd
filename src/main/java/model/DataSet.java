@@ -2,9 +2,6 @@ package model;
 
 import java.util.Arrays;
 
-/**
- * Created by Viktor on 08.08.2017.
- */
 public class DataSet {
 
     class Data {

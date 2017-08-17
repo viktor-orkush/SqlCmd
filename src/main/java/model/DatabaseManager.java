@@ -15,4 +15,6 @@ public interface DatabaseManager {
     DataSet[] getTableData(String tableName);
 
     void update(String tableName, int id, DataSet newValue);
+
+    String[] getTableHeader(String tableName);
 }

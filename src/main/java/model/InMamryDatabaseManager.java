@@ -44,4 +44,9 @@ public class InMamryDatabaseManager implements DatabaseManager {
             }
         }
     }
+
+    @Override
+    public String[] getTableHeader(String tableName) {
+        return new String[0];
+    }
 }

@@ -71,4 +71,17 @@ public class JDBCDatabaseManagerTest {
         assertEquals("[name, password, id]", Arrays.toString(dataTable[0].getNames()));
         assertEquals("[Victor, passNew, 13]", Arrays.toString(dataTable[0].getValues()));
     }
+
+    @Test
+    public void getTableHeaderTest() {
+        //given
+        maneger.clear("users");
+
+        //when
+        String[] tableHeader = maneger.getTableHeader("users");
+
+        //then
+        assertEquals(3, tableHeader.length);
+        assertEquals("[name, password, id]", Arrays.toString(tableHeader));
+    }
 }
