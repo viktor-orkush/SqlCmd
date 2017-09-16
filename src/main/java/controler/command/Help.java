@@ -28,6 +28,12 @@ public class Help implements Command{
         view.write("\tfind|tableName");
         view.write("\t\tдля получения содержимого таблицы 'tableName'");
 
+        view.write("\tcreate|table|column|value|...");
+        view.write("\t\tдля  вставки даних в выбраную таблицу");
+
+        view.write("\tclear|table");
+        view.write("\t\tочистить данные с таблицы");
+
         view.write("\thelp");
         view.write("\t\tдля вывода этого списка на экран");
 

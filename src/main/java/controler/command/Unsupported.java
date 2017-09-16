@@ -1,12 +1,8 @@
 package controler.command;
 
-import controler.command.Command;
 import model.DatabaseManager;
 import view.View;
 
-/**
- * Created by Viktor on 17.08.2017.
- */
 public class Unsupported implements Command {
 
     DatabaseManager manager;

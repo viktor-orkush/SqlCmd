@@ -13,6 +13,9 @@ public class JDBCDatabaseManager implements DatabaseManager {
             throw new RuntimeException("Pleas add jdbc jar driver to project", e);
         }
         try {
+            if(connect != null){
+                connect.close();
+            }
             database += "?loggerLevel=OFF";
             connect = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/" + database, user, password);
         } catch (Exception e) {

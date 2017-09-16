@@ -29,7 +29,7 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void getTableDateTest() {
+    public void insertDataSetInTableTest() {
         //given
         maneger.clear("users");
 

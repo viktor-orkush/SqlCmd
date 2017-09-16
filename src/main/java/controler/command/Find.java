@@ -25,12 +25,14 @@ public class Find implements Command {
     @Override
     public void process(String command) {
         String[] examComFind = {"find", "tableName"};
-        String[] arrLine = command.split("[|]");
-        if (arrLine.length != examComFind.length)
-            throw new IllegalArgumentException("Введте название таблицы правильно");
-        String tableName = arrLine[1];
+        String[] argumentArray = command.split("[|]");
 
+        if (argumentArray.length != examComFind.length)
+            throw new IllegalArgumentException("Введте название таблицы правильно");
+
+        String tableName = argumentArray[1];
         String[] tableHeader = manager.getTableHeader(tableName);
+
         try{
             printTableHeader(tableHeader);
         }catch(Exception e){
