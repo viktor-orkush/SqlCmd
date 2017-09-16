@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.SQLException;
+
 /**
  * Created by Viktor on 11.08.2017.
  */
@@ -17,4 +19,6 @@ public interface DatabaseManager {
     void update(String tableName, int id, DataSet newValue);
 
     String[] getTableHeader(String tableName);
+
+    boolean isConnected();
 }

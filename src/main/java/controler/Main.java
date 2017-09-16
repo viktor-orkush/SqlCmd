@@ -5,7 +5,7 @@ import model.JDBCDatabaseManager;
 import view.Console;
 import view.View;
 
-//  sqlcmd|admin|admin
+//  connect|sqlcmd|admin|admin
 public class Main {
 
     public static void main(String[] args) {

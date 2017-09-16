@@ -49,4 +49,9 @@ public class InMamryDatabaseManager implements DatabaseManager {
     public String[] getTableHeader(String tableName) {
         return new String[0];
     }
+
+    @Override
+    public boolean isConnected() {
+        return true;
+    }
 }

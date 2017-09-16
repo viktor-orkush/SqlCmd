@@ -8,10 +8,6 @@ import java.util.Arrays;
 public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connect;
 
-    /*public JDBCDatabaseManager(String database, String user, String password) {
-        connect(database, user, password);
-    }*/
-
     public void connect(String database, String user, String password) {
         try {
             Class.forName("org.postgresql.Driver");
@@ -19,10 +15,14 @@ public class JDBCDatabaseManager implements DatabaseManager {
             throw new RuntimeException("Pleas add jdbc jar driver to project", e);
         }
         try {
+            database += "?loggerLevel=OFF";
             connect = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/" + database, user, password);
-        } catch (SQLException e) {
+        }catch (Exception e) {
             connect = null;
-            throw new RuntimeException(String.format("Cont get connection for model: %s, user: %s", database, user), e);
+            throw new RuntimeException(
+                    String.format("Cant get connection for model:%s user:%s",
+                            database, user),
+                    e);
         }
     }
 
@@ -44,7 +44,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             return listTable;
         }
         catch(SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
     }
@@ -56,7 +56,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -76,13 +76,13 @@ public class JDBCDatabaseManager implements DatabaseManager {
             stmt.close();
         }
         catch (SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
     @Override
     public DataSet[] getTableData(String tableName) {
-        try{
+        try {
             int size = getSize(tableName);
 
             DataSet[] data = new DataSet[size];
@@ -91,7 +91,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             Statement stmt = connect.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName);
 
-            ResultSetMetaData rsmd=rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
 
             int columnCount = rsmd.getColumnCount();
 
@@ -106,9 +106,8 @@ public class JDBCDatabaseManager implements DatabaseManager {
             rs.close();
             stmt.close();
             return data;
-        }
-        catch(SQLException e){
-            e.printStackTrace();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -123,7 +122,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             return size;
         }
         catch(SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return 0;
         }
     }
@@ -148,7 +147,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             pstmt.close();
         }
         catch(SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -172,9 +171,14 @@ public class JDBCDatabaseManager implements DatabaseManager {
             return columnArr;
         }
         catch(SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean isConnected() {
+        return connect != null;
     }
 
     private String formaString(String[] inputString, String formatType) {

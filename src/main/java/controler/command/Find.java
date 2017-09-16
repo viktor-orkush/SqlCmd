@@ -31,13 +31,21 @@ public class Find implements Command {
         String tableName = arrLine[1];
 
         String[] tableHeader = manager.getTableHeader(tableName);
-        printTableHeader(tableHeader);
-
+        try{
+            printTableHeader(tableHeader);
+        }catch(Exception e){
+            //doNothing
+        }
         DataSet[] tableData = manager.getTableData(tableName);
-        printTableValues(tableData);
+        try{
+            printTableValues(tableData);
+        }catch(Exception e){
+            //doNothing
+        }
     }
 
     private void printTableHeader(String[] tableHeader) {
+        if(tableHeader.length == 0) throw new IllegalArgumentException();
         String printValues ="";
         for (int j = 0; j < tableHeader.length; j++) {
             printValues += tableHeader[j] + "| ";
@@ -48,6 +56,7 @@ public class Find implements Command {
     }
 
     private void printTableValues(DataSet[] tableData) {
+        if(tableData.length == 0) throw new IllegalArgumentException();
         for (int i = 0; i < tableData.length; i++) {
             printRow(tableData[i]);
         }

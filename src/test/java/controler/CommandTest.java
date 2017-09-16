@@ -7,12 +7,9 @@ import model.JDBCDatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
-import java.util.Arrays;
-
 import view.Console;
 import view.View;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Viktor on 17.08.2017.
@@ -29,14 +26,12 @@ public class CommandTest {
     }
 
     @Test
-    public void commandTEst() {
+    public void findTest() {
         Command command = new Find(view, maneger);
 
         String input = "find|users";
-        command.canProcess(input);
         command.process(input);
 
-       /* System.out.println(Arrays.toString(listTable));
-        assertEquals("[test, users]", actual);*/
+        assertTrue(command.canProcess(input));
     }
 }

@@ -1,5 +1,6 @@
 package controler.command;
 
+import com.sun.javaws.exceptions.ExitException;
 import view.View;
 
 public class Exit implements Command {
@@ -18,6 +19,6 @@ public class Exit implements Command {
     @Override
     public void process(String command) {
         view.write("До скорой встречи!");
-        System.exit(0);
+        throw new controler.command.ExitException();
     }
 }
