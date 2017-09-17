@@ -1,4 +1,4 @@
-package controler;
+package model;
 
 import model.DataSet;
 import model.DatabaseManager;
