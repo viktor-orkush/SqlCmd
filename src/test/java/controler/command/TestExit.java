@@ -25,7 +25,7 @@ public class TestExit {
 
 
     @Test
-    public void testExit(){
+    public void testExitProcess(){
         try{
             command.process("exit");
         } catch(Exception e){
