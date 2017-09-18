@@ -44,4 +44,13 @@ public class TestClear {
             assertEquals("Введено не правельное количество аргументов", e.getMessage());
         }
     }
+
+    @Test
+    public void testClearProcess(){
+        try{
+            command.process("clear|users");
+        } catch(Exception e){
+        }
+        Mockito.verify(view).write("Данные из таблици users успешго очищены!");
+    }
 }

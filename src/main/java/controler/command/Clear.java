@@ -25,7 +25,8 @@ public class Clear implements Command{
         String[] argumentArray = command.split("[|]");
         if(argumentArray.length != 2) throw new IllegalArgumentException("Введено не правельное количество аргументов");
         String tableName = argumentArray[1];
+
         manager.clear(tableName);
-        view.write("Данные очищены!");
+        view.write(String.format("Данные из таблици %s успешго очищены!", tableName));
     }
 }

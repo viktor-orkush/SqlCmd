@@ -67,4 +67,19 @@ public class TestFind {
                         "1| Victor| 123| , " +
                         "2| Nastya| 456| ]", captor.getAllValues().toString());
     }
+
+    @Test
+    public void testFindProcessWithoutParameters(){
+        Mockito.when(manager.getTableHeader("users"))
+                .thenReturn(new String[] {"id", "name", "password"});
+
+        command.process("find|users");
+
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(view, Mockito.atLeastOnce()).write(captor.capture());
+        assertEquals(
+                "[---------------------------, " +
+                        "id| name| password| ," +
+                        " ---------------------------]" , captor.getAllValues().toString());
+    }
 }
