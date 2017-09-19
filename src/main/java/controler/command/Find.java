@@ -4,9 +4,6 @@ import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
-/**
- * Created by Viktor on 15.08.2017.
- */
 public class Find implements Command {
 
     private View view;
