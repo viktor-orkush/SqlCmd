@@ -37,25 +37,11 @@ public class IntegrationTest {
     public void testExit(){
         //given
         clear();
-
-        in.add("help");
         in.add("exit");
         //when
         Main.main(new String[0]);
         //then
         assertEquals(
-                "Введите команду или help для помощи\r\n" +
-                "Существующие команды:\r\n" +
-                "\tconnect|sqlcmd|admin|admin\r\n" +
-                "\t\tдля  подключения к базе\r\n" +
-                "\tlist\r\n" +
-                "\t\tдля получения списка всех таблиц базы, к которой подключились\r\n" +
-                "\tfind|tableName\r\n" +
-                "\t\tдля получения содержимого таблицы 'tableName'\r\n" +
-                "\thelp\r\n" +
-                "\t\tдля вывода этого списка на экран\r\n" +
-                "\texit\r\n" +
-                "\t\tдля выхода из программы\r\n" +
                 "Введите команду или help для помощи\r\n" +
                 "До скорой встречи!\r\n", getData());
     }
@@ -98,6 +84,7 @@ public class IntegrationTest {
         //given
         clear();
         in.add("connect|sqlcmd|admin|admin");
+        in.add("clear|users");
         in.add("list");
         in.add("find|users");
         in.add("exit");
@@ -107,6 +94,8 @@ public class IntegrationTest {
         assertEquals(
                 "Введите команду или help для помощи\r\n" +
                         "Привет admin\r\n" +
+                        "Введите команду или help для помощи\r\n"+
+                        "Данные из таблици users успешго очищены!\r\n"+
                         "Введите команду или help для помощи\r\n" +
                         "[test, users]\r\n" +
                         "Введите команду или help для помощи\r\n" +
@@ -170,9 +159,9 @@ public class IntegrationTest {
                 "Введите команду или help для помощи\r\n" +
                         "Привет admin\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "Данные очищены!\r\n " +
+                        "Данные из таблици users успешго очищены!\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "Данные добавлены!\r\n" +
+                        "Данные успешно добавлены в таблтицу users\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "---------------------------\r\n" +
                         "name| password| id| \r\n" +
