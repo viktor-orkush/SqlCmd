@@ -4,6 +4,9 @@ import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
+import java.util.*;
+import java.util.List;
+
 public class Find implements Command {
 
     private View view;
@@ -35,7 +38,7 @@ public class Find implements Command {
         }catch(Exception e){
             //doNothing
         }
-        DataSet[] tableData = manager.getTableData(tableName);
+        java.util.List<DataSet> tableData = manager.getTableData(tableName);
         try{
             printTableValues(tableData);
         }catch(Exception e){
@@ -54,10 +57,10 @@ public class Find implements Command {
         view.write("---------------------------");
     }
 
-    private void printTableValues(DataSet[] tableData) {
-        if(tableData.length == 0) throw new IllegalArgumentException();
-        for (int i = 0; i < tableData.length; i++) {
-            printRow(tableData[i]);
+    private void printTableValues(List<DataSet> tableData) {
+        if(tableData.size() == 0) throw new IllegalArgumentException();
+        for (DataSet data : tableData) {
+            printRow(data);
         }
     }
 

@@ -1,6 +1,5 @@
 package controler.command;
 
-import com.sun.javaws.exceptions.ExitException;
 import view.View;
 
 public class Exit implements Command {

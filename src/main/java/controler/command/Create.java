@@ -4,9 +4,7 @@ import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
-/**
- * Created by Viktor on 16.09.2017.
- */
+
 public class Create implements Command {
 
     private View view;

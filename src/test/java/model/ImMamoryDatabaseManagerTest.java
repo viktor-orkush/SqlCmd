@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -40,11 +41,10 @@ public class ImMamoryDatabaseManagerTest {
         maneger.create("users", input);
 
         //then
-        DataSet[] dataTable = maneger.getTableData("users");
-        assertEquals(1, dataTable.length);
-        System.out.println(dataTable[0].toString());
-        assertEquals("[id, name, password]", Arrays.toString(dataTable[0].getNames()));
-        assertEquals("[13, Victor, 123]", Arrays.toString(dataTable[0].getValues()));
+        List<DataSet> dataTable = maneger.getTableData("users");
+        assertEquals(1, dataTable.size());
+        assertEquals("[id, name, password]", Arrays.toString(dataTable.get(0).getNames()));
+        assertEquals("[13, Victor, 123]", Arrays.toString(dataTable.get(0).getValues()));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class ImMamoryDatabaseManagerTest {
         maneger.update("users", 13, newValue);
 
         //then
-        DataSet[] dataTable = maneger.getTableData("users");
-        assertEquals(1, dataTable.length);
-        assertEquals("[id, name, password]", Arrays.toString(dataTable[0].getNames()));
-        assertEquals("[13, Victor, passNew]", Arrays.toString(dataTable[0].getValues()));
+        List<DataSet> dataTable = maneger.getTableData("users");
+        assertEquals(1, dataTable.size());
+        assertEquals("[id, name, password]", Arrays.toString(dataTable.get(0).getNames()));
+        assertEquals("[13, Victor, passNew]", Arrays.toString(dataTable.get(0).getValues()));
     }
 }

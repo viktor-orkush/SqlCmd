@@ -8,6 +8,8 @@ import model.DatabaseManager;
 import org.junit.Before;
 import org.mockito.Mockito;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -54,7 +56,7 @@ public class TestFind {
 
         DataSet[] data = new DataSet[] {user1, user2};
 
-        Mockito.when(manager.getTableData("users")).thenReturn(data);
+        Mockito.when(manager.getTableData("users")).thenReturn(Arrays.asList(data));
 
         command.process("find|users");
 

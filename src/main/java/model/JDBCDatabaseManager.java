@@ -2,6 +2,8 @@ package model;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
     private Connection connect;
@@ -34,7 +36,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
                      "FROM information_schema.tables " +
                      "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"))
         {
-            String[] listTable = new String[10];
+            String[] listTable = new String[10]; //todo magic number
             int index = 0;
             while (rs.next()) {
                 String tableName = rs.getString("table_name");
@@ -74,27 +76,26 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public DataSet[] getTableData(String tableName) {
+    public List<DataSet> getTableData(String tableName) {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName))
         {
             int size = getSize(tableName);
-            DataSet[] data = new DataSet[size];
-            int index = 0;
+            List<DataSet> data = new LinkedList<>();
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             while (rs.next()) {
-                data[index] = new DataSet();
+                DataSet dataSet = new DataSet();
                 for (int i = 1; i <= columnCount; i++) {
-                    data[index].put(rsmd.getColumnName(i), rs.getString(i));
+                    dataSet.put(rsmd.getColumnName(i), rs.getString(i));
                 }
-                index++;
+                data.add(dataSet);
             }
             return data;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new DataSet[0];
+            return new LinkedList<>();
         }
     }
 

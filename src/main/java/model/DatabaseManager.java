@@ -1,10 +1,7 @@
 package model;
 
-import java.sql.SQLException;
+import java.util.List;
 
-/**
- * Created by Viktor on 11.08.2017.
- */
 public interface DatabaseManager {
     void connect(String database, String user, String password);
 
@@ -14,7 +11,7 @@ public interface DatabaseManager {
 
     void create(String tableName, DataSet input);
 
-    DataSet[] getTableData(String tableName);
+    List<DataSet> getTableData(String tableName);
 
     void update(String tableName, int id, DataSet newValue);
 
