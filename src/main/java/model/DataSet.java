@@ -1,72 +1,90 @@
 package model;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DataSet {
 
     class Data {
-
         String name;
-        Object value;
 
+        Object value;
         public Data(String name, Object value){
             this.name = name;
             this.value = value;
         }
+
         public String getName() {
             return name;
         }
-
         public Object getValue() {
             return value;
         }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Data data = (Data) o;
+
+            if (name != null ? !name.equals(data.name) : data.name != null) return false;
+            return value != null ? value.equals(data.value) : data.value == null;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + (value != null ? value.hashCode() : 0);
+            return result;
+        }
     }
 
-    Data[] data = new Data[100]; //todo change magic number 100
-    int freeIndex = 0;
+    List<Data> dataList = new LinkedList<>();
 
     public void put(String name, Object value) {
         boolean updated = false;
-        for (int i = 0; i < freeIndex; i++) {
-            if(data[i].getName().equals(name)){
-                data[i].value = value;
+        for(Data data : dataList) {
+            if (data.getName().equals(name)) {
+                data.value = value;
                 updated = true;
             }
         }
         if(!updated){
-            data[freeIndex++] = new Data(name, value);
+             dataList.add(new Data(name, value));
         }
     }
 
     public Object get(String name) {
-        for (int i = 0; i < freeIndex; i++) {
-            if(data[i].getName().equals(name)){
-                return data[i].getValue();
+        for (Data data : dataList) {
+            if(data.getName().equals(name)){
+                return data.getValue();
             }
         }
         return 0;
     }
 
     public void updateFrome(DataSet newValue) {
-        for (int i = 0; i < newValue.freeIndex; i++) {
-            Data data = newValue.data[i];
+        for(Data data : newValue.dataList){
             this.put(data.name, data.value);
         }
     }
 
     public String[] getNames() {
-        String[] result = new String[freeIndex];
-        for (int i = 0; i < freeIndex; i++) {
-            result[i] = data[i].getName();
+        String[] result = new String[dataList.size()];
+        int index = 0;
+        for (Data data : dataList) {
+            result[index++] = data.getName();
         }
         return result;
     }
 
     public Object[] getValues() {
-        Object[] result = new Object[freeIndex];
-        for (int i = 0; i < freeIndex; i++) {
-            result[i] = data[i].getValue();
+        Object[] result = new Object[dataList.size()];
+        int index = 0;
+        for (Data data : dataList) {
+            result[index++] = data.getValue();
         }
         return result;
     }
