@@ -14,8 +14,10 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String[] getListTables() {
-        return new String[] {TABLE_NAME};
+    public List<String> getListTables() {
+        List<String> tableList = new LinkedList<>();
+        tableList.add(TABLE_NAME);
+        return tableList;
     }
 
     @Override
@@ -43,8 +45,8 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String[] getTableHeader(String tableName) {
-        return new String[0];
+    public List<String> getTableHeader(String tableName) {
+        return new LinkedList<String>();
     }
 
     @Override

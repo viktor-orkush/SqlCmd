@@ -1,8 +1,5 @@
 package model;
 
-import model.DataSet;
-import model.DatabaseManager;
-import model.JDBCDatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,9 +20,8 @@ public class JDBCDatabaseManagerTest {
 
     @Test
     public void getListTableTest() throws SQLException, ClassNotFoundException {
-        String[] listTable = maneger.getListTables();
-        String actual = Arrays.toString(listTable);
-        System.out.println(Arrays.toString(listTable));
+        List<String> listTable = maneger.getListTables();
+        String actual = Arrays.toString(listTable.toArray());
         assertEquals("[test, users]", actual);
     }
 
@@ -78,10 +74,10 @@ public class JDBCDatabaseManagerTest {
         maneger.clear("users");
 
         //when
-        String[] tableHeader = maneger.getTableHeader("users");
+        List<String> tableHeader = maneger.getTableHeader("users");
 
         //then
-        assertEquals(3, tableHeader.length);
-        assertEquals("[name, password, id]", Arrays.toString(tableHeader));
+        assertEquals(3, tableHeader.size());
+        assertEquals("[name, password, id]", Arrays.toString(tableHeader.toArray()));
     }
 }

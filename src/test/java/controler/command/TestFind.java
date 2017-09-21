@@ -8,7 +8,8 @@ import model.DatabaseManager;
 import org.junit.Before;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
+import java.util.*;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -41,8 +42,13 @@ public class TestFind {
 
     @Test
     public void testFindProcess(){
+        List<String> headerList = new LinkedList<>();
+        headerList.add("id");
+        headerList.add("name");
+        headerList.add("password");
+
         Mockito.when(manager.getTableHeader("users"))
-                .thenReturn(new String[] {"id", "name", "password"});
+                .thenReturn(headerList);
 
         DataSet user1 = new DataSet();
         user1.put("id", "1");
@@ -54,9 +60,11 @@ public class TestFind {
         user2.put("name", "Nastya");
         user2.put("password", "456");
 
-        DataSet[] data = new DataSet[] {user1, user2};
+        List<DataSet> dataList = new LinkedList<>();
+        dataList.add(user1);
+        dataList.add(user2);
 
-        Mockito.when(manager.getTableData("users")).thenReturn(Arrays.asList(data));
+        Mockito.when(manager.getTableData("users")).thenReturn(dataList);
 
         command.process("find|users");
 
@@ -72,8 +80,13 @@ public class TestFind {
 
     @Test
     public void testFindProcessWithoutParameters(){
+        List<String> headerList = new LinkedList<>();
+        headerList.add("id");
+        headerList.add("name");
+        headerList.add("password");
+
         Mockito.when(manager.getTableHeader("users"))
-                .thenReturn(new String[] {"id", "name", "password"});
+                .thenReturn(headerList);
 
         command.process("find|users");
 

@@ -1,12 +1,13 @@
 package controler.command;
 
-import model.DataSet;
 import model.DatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import view.View;
+import java.util.List;
+
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -37,14 +38,25 @@ public class TestCreate {
 
     @Test
     public void testCreateProcess() {
-        Mockito.when(manager.getTableHeader("users")).thenReturn(new String[]{"id", "user", "password"});
+        List<String> headerList = new LinkedList<>();
+        headerList.add("id");
+        headerList.add("name");
+        headerList.add("password");
+
+        Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
+
         command.process("create|users|id|1|user|victor|password|123");
         Mockito.verify(view, Mockito.atLeastOnce()).write("Данные успешно добавлены в таблтицу users");
     }
 
     @Test
     public void testCreateProcessWithoutOneParameters() {
-        Mockito.when(manager.getTableHeader("users")).thenReturn(new String[]{"id", "user", "password"});
+        List<String> headerList = new LinkedList<>();
+        headerList.add("id");
+        headerList.add("name");
+        headerList.add("password");
+
+        Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
         try {
             command.process("create|users|id|1|user|victor|password|");
         } catch (IllegalArgumentException e) {
@@ -54,7 +66,13 @@ public class TestCreate {
 
     @Test
     public void testCreateProcessWithoutNameTable() {
-        Mockito.when(manager.getTableHeader("users")).thenReturn(new String[]{"id", "user", "password"});
+        List<String> headerList = new LinkedList<>();
+        headerList.add("id");
+        headerList.add("name");
+        headerList.add("password");
+
+        Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
+
         try {
             command.process("create|");
             fail("Expected IllegalArgumentException.");

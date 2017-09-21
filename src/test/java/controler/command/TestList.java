@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 
 import view.View;
 
+import java.util.LinkedList;
+
 import static org.junit.Assert.assertEquals;
 
 public class TestList {
@@ -26,8 +28,10 @@ public class TestList {
 
     @Test
     public void testListProcess(){
-
-        Mockito.when( manager.getListTables()).thenReturn(new String[] {"users", "test"});
+        java.util.List<String> tablesList = new LinkedList<>();
+        tablesList.add("users");
+        tablesList.add("test");
+        Mockito.when( manager.getListTables()).thenReturn(tablesList);
 
         command.process("list");
 
@@ -40,7 +44,7 @@ public class TestList {
     @Test
     public void testListProcessWithoutParameters(){
 
-        Mockito.when( manager.getListTables()).thenReturn(new String[0]);
+        Mockito.when( manager.getListTables()).thenReturn(new LinkedList<>());
 
         command.process("list");
 

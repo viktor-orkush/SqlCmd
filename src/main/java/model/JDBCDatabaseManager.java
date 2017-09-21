@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,19 +29,18 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String[] getListTables() {
+    public List<String> getListTables() {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT table_name " +
                      "FROM information_schema.tables " +
                      "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"))
         {
-            String[] listTable = new String[10]; //todo magic number
-            int index = 0;
+            List<String> listTable = new LinkedList<>(); //todo magic number
+
             while (rs.next()) {
                 String tableName = rs.getString("table_name");
-                listTable[index++] = tableName;
+                listTable.add(tableName);
             }
-            listTable = Arrays.copyOf(listTable, index, String[].class);
             return listTable;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,7 +93,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             return data;
         } catch (SQLException e) {
             e.printStackTrace();
-            return new LinkedList<>();
+            return new LinkedList<DataSet>();
         }
     }
 
@@ -132,20 +130,18 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public String[] getTableHeader(String tableName) {
+    public List<String> getTableHeader(String tableName) {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT column_name" +
                      " FROM information_schema.columns" +
                      " WHERE table_name   = '" + tableName + "'"))
         {
-            String[] columnArr = new String[10];
-            int index = 0;
+            List<String> columnList = new LinkedList<>();
             while (rs.next()) {
                 String tableCol = rs.getString("column_name");
-                columnArr[index++] = tableCol;
+                columnList.add(tableCol);
             }
-            columnArr = Arrays.copyOf(columnArr, index, String[].class);
-            return columnArr;
+            return columnList;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

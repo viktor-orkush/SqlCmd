@@ -3,9 +3,6 @@ package integration;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Created by Viktor on 19.08.2017.
- */
 public class LogOutputStream extends OutputStream {
 
     private String log;

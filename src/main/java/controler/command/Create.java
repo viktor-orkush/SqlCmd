@@ -4,6 +4,8 @@ import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
+import java.util.*;
+
 
 public class Create implements Command {
 
@@ -27,9 +29,9 @@ public class Create implements Command {
             throw new IllegalArgumentException("Неверное количество введеных параметров");
         }
         String tableName = argumentArray[1];
-        String[] tableHeader = manager.getTableHeader(tableName);
+        java.util.List<String> tableHeader = manager.getTableHeader(tableName);
         int inputParameters = (argumentArray.length - 2) / 2;
-        if(tableHeader.length != inputParameters){
+        if(tableHeader.size() != inputParameters){
             throw new IllegalArgumentException("Неверное количество введеных параметров");
         }
         DataSet dataSet = new DataSet();

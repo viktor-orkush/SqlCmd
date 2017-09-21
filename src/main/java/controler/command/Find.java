@@ -4,7 +4,7 @@ import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
-import java.util.*;
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public class Find implements Command {
@@ -31,33 +31,34 @@ public class Find implements Command {
             throw new IllegalArgumentException("Введте название таблицы правильно");
 
         String tableName = argumentArray[1];
-        String[] tableHeader = manager.getTableHeader(tableName);
 
         try{
-            printTableHeader(tableHeader);
+            printTableHeader(tableName);
         }catch(Exception e){
             //doNothing
         }
-        java.util.List<DataSet> tableData = manager.getTableData(tableName);
+
         try{
-            printTableValues(tableData);
+            printTableValues(tableName);
         }catch(Exception e){
             //doNothing
         }
     }
 
-    private void printTableHeader(String[] tableHeader) {
-        if(tableHeader.length == 0) throw new IllegalArgumentException();
+    private void printTableHeader(String tableName) {
+        List<String> tableHeader = manager.getTableHeader(tableName);
+        if(tableHeader.size() == 0) throw new IllegalArgumentException();
         String printValues ="";
-        for (int j = 0; j < tableHeader.length; j++) {
-            printValues += tableHeader[j] + "| ";
+        for (String header : tableHeader) {
+            printValues += header+ "| ";
         }
         view.write("---------------------------");
         view.write(printValues);
         view.write("---------------------------");
     }
 
-    private void printTableValues(List<DataSet> tableData) {
+    private void printTableValues(String tableName) {
+        List<DataSet> tableData = manager.getTableData(tableName);
         if(tableData.size() == 0) throw new IllegalArgumentException();
         for (DataSet data : tableData) {
             printRow(data);

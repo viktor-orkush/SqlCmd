@@ -5,7 +5,7 @@ import java.util.List;
 public interface DatabaseManager {
     void connect(String database, String user, String password);
 
-    String[] getListTables();
+    List<String> getListTables();
 
     void clear(String tableName);
 
@@ -15,7 +15,7 @@ public interface DatabaseManager {
 
     void update(String tableName, int id, DataSet newValue);
 
-    String[] getTableHeader(String tableName);
+    List<String> getTableHeader(String tableName);
 
     boolean isConnected();
 }

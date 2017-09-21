@@ -1,8 +1,5 @@
 package model;
 
-import model.DataSet;
-import model.DatabaseManager;
-import model.InMamryDatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +19,9 @@ public class ImMamoryDatabaseManagerTest {
 
     @Test
     public void getListTableTest() throws SQLException, ClassNotFoundException {
-        String[] listTable = maneger.getListTables();
-        String actual = Arrays.toString(listTable);
-        System.out.println(Arrays.toString(listTable));
+        List<String> listTable = maneger.getListTables();
+        String actual = Arrays.toString(listTable.toArray());
+        System.out.println(Arrays.toString(listTable.toArray()));
         assertEquals("[users]", actual);
     }
 
