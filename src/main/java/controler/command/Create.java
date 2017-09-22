@@ -1,9 +1,11 @@
 package controler.command;
 
+import com.sun.javafx.binding.StringFormatter;
 import model.DataSet;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -29,7 +31,9 @@ public class Create implements Command {
             throw new IllegalArgumentException("Неверное количество введеных параметров");
         }
         String tableName = argumentArray[1];
-        java.util.List<String> tableHeader = manager.getTableHeader(tableName);
+        java.util.List<String> tableHeader = null;
+        try {
+            tableHeader = manager.getTableHeader(tableName);
         int inputParameters = (argumentArray.length - 2) / 2;
         if(tableHeader.size() != inputParameters){
             throw new IllegalArgumentException("Неверное количество введеных параметров");
@@ -40,5 +44,8 @@ public class Create implements Command {
         }
         manager.create(tableName, dataSet);
         view.write(String.format("Данные успешно добавлены в таблтицу %s", tableName));
+        } catch (SQLException e) {
+            view.write(String.format("Не удалось добавить данные в таблицу %s по причине: ", tableName) + e.getMessage());
+        }
     }
 }

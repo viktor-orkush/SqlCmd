@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import view.View;
+
+import java.sql.SQLException;
 import java.util.List;
 
 import java.util.*;
@@ -37,7 +39,7 @@ public class TestCreate {
     }
 
     @Test
-    public void testCreateProcess() {
+    public void testCreateProcess() throws SQLException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -50,7 +52,7 @@ public class TestCreate {
     }
 
     @Test
-    public void testCreateProcessWithoutOneParameters() {
+    public void testCreateProcessWithoutOneParameters() throws SQLException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -65,7 +67,7 @@ public class TestCreate {
     }
 
     @Test
-    public void testCreateProcessWithoutNameTable() {
+    public void testCreateProcessWithoutNameTable() throws SQLException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");

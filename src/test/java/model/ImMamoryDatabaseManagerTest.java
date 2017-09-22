@@ -26,7 +26,7 @@ public class ImMamoryDatabaseManagerTest {
     }
 
     @Test
-    public void getTableDateTest() {
+    public void getTableDateTest() throws SQLException {
         //given
         maneger.clear("users");
 
@@ -45,7 +45,7 @@ public class ImMamoryDatabaseManagerTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateTest() throws SQLException {
         //given
         maneger.clear("users");
 

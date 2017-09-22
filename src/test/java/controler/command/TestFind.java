@@ -8,6 +8,7 @@ import model.DatabaseManager;
 import org.junit.Before;
 import org.mockito.Mockito;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class TestFind {
     }
 
     @Test
-    public void testFindProcess(){
+    public void testFindProcess() throws SQLException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -79,7 +80,7 @@ public class TestFind {
     }
 
     @Test
-    public void testFindProcessWithoutParameters(){
+    public void testFindProcessWithoutParameters() throws SQLException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");

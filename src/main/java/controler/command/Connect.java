@@ -35,7 +35,6 @@ public class Connect implements Command {
             view.write("Привет " + user);
         } catch (Exception e) {
             String massage = " ";
-//            if (e.getCause() != null) massage += e.getCause().getMessage();
             view.write("Не удача по причине " + e.getMessage() + massage);
             view.write("Повтори попитку");
         }

@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,12 @@ public class InMamryDatabaseManager implements DatabaseManager {
 
     @Override
     public void connect(String database, String user, String password) {
-//do nothing
+        //do nothing
+    }
+
+    @Override
+    public void disconnect() throws SQLException {
+        //do nothing
     }
 
     @Override

@@ -1,21 +1,24 @@
 package model;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DatabaseManager {
-    void connect(String database, String user, String password);
+    void connect(String database, String user, String password) throws Exception;
 
-    List<String> getListTables();
+    void disconnect() throws SQLException;
 
-    void clear(String tableName);
+    List<String> getListTables() throws SQLException;
 
-    void create(String tableName, DataSet input);
+    void clear(String tableName) throws SQLException;
 
-    List<DataSet> getTableData(String tableName);
+    void create(String tableName, DataSet input) throws SQLException;
 
-    void update(String tableName, int id, DataSet newValue);
+    List<DataSet> getTableData(String tableName) throws SQLException;
 
-    List<String> getTableHeader(String tableName);
+    void update(String tableName, int id, DataSet newValue) throws SQLException;
+
+    List<String> getTableHeader(String tableName) throws SQLException;
 
     boolean isConnected();
 }

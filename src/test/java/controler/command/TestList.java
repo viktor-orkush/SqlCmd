@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import view.View;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +28,7 @@ public class TestList {
     }
 
     @Test
-    public void testListProcess(){
+    public void testListProcess() throws SQLException {
         java.util.List<String> tablesList = new LinkedList<>();
         tablesList.add("users");
         tablesList.add("test");
@@ -42,7 +43,7 @@ public class TestList {
     }
 
     @Test
-    public void testListProcessWithoutParameters(){
+    public void testListProcessWithoutParameters() throws SQLException {
 
         Mockito.when( manager.getListTables()).thenReturn(new LinkedList<>());
 

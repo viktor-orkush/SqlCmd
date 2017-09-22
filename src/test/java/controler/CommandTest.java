@@ -19,7 +19,7 @@ public class CommandTest {
     View view;
 
     @Before
-    public void setup(){
+    public void setup() throws Exception {
         maneger = new JDBCDatabaseManager();
         maneger.connect("sqlcmd", "admin", "admin");
         view = new Console();

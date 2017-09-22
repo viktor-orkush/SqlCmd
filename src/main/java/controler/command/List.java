@@ -3,11 +3,9 @@ package controler.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 
-/**
- * Created by Viktor on 15.08.2017.
- */
 public class List implements Command {
 
     private View view;
@@ -25,7 +23,12 @@ public class List implements Command {
 
     @Override
     public void process(String command) {
-        java.util.List<String> tableList = manager.getListTables();
-        view.write(Arrays.toString(tableList.toArray()));
+        java.util.List<String> tableList = null;
+        try {
+            tableList = manager.getListTables();
+            view.write(Arrays.toString(tableList.toArray()));
+        } catch (SQLException e) {
+            view.write("Не удалось получить список таблиц по причине: " + e.getMessage());
+        }
     }
 }

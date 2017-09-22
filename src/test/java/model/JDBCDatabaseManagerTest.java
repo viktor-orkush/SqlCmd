@@ -13,7 +13,7 @@ public class JDBCDatabaseManagerTest {
     DatabaseManager maneger;
 
     @Before
-    public void setup(){
+    public void setup() throws Exception {
         maneger = new JDBCDatabaseManager();
         maneger.connect("sqlcmd", "admin", "admin");
     }
@@ -26,7 +26,7 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void insertDataSetInTableTest() {
+    public void insertDataSetInTableTest() throws SQLException {
         //given
         maneger.clear("users");
 
@@ -45,7 +45,7 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void updateTest() {
+    public void updateTest() throws SQLException {
         //given
         maneger.clear("users");
 
@@ -69,7 +69,7 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void getTableHeaderTest() {
+    public void getTableHeaderTest() throws SQLException {
         //given
         maneger.clear("users");
 

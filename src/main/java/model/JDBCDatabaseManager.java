@@ -5,37 +5,48 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
+    private static final String LOCAL_DB_ADDRESS = "127.0.0.1";
+    private static final String PORT = "5432";
     private Connection connect;
 
-    public void connect(String database, String user, String password) {
+    public void connect(String database, String user, String password) throws ClassNotFoundException, SQLException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Pleas add jdbc jar driver to project", e);
+            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
         }
         try {
             if(connect != null){
                 connect.close();
             }
             database += "?loggerLevel=OFF";
-            connect = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/" + database, user, password);
-        } catch (Exception e) {
+            connect = DriverManager.getConnection("jdbc:postgresql://" + LOCAL_DB_ADDRESS + ":" + PORT + "/" + database, user, password);
+        } catch (SQLException e) {
             connect = null;
-            throw new RuntimeException(
-                    String.format("Cant get connection for model:%s user:%s",
-                            database, user),
-                    e);
+            throw new SQLException(String.format("Cant get connection for model:%s user:%s", database, user), e);
         }
     }
 
     @Override
-    public List<String> getListTables() {
+    public void disconnect() throws SQLException {
+        if (connect != null) {
+            try {
+                connect.close();
+                connect = null;
+            } catch (SQLException e) {
+                throw new SQLException(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    public List<String> getListTables() throws SQLException {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT table_name " +
                      "FROM information_schema.tables " +
                      "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"))
         {
-            List<String> listTable = new LinkedList<>(); //todo magic number
+            List<String> listTable = new LinkedList<>();
 
             while (rs.next()) {
                 String tableName = rs.getString("table_name");
@@ -43,25 +54,24 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
             return listTable;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new SQLException(e.getMessage());
         }
     }
 
     @Override
-    public void clear(String tableName) {
+    public void clear(String tableName) throws SQLException {
         String sql = "TRUNCATE  TABLE " + tableName;
         try (PreparedStatement stmt = connect.prepareStatement(sql)){
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
     }
 
     @Override
-    public void create(String tableName, DataSet input) {
+    public void create(String tableName, DataSet input) throws SQLException {
             String[] arrHeaderTables = input.getNames();
-            String headerTable = formaString(arrHeaderTables, "%s,");
+            String headerTable = formatString(arrHeaderTables, "%s,");
             String values = formatDS(input, "'%s',");
 
             String sql = "INSERT INTO " + tableName + "( " + headerTable + " ) "
@@ -69,12 +79,12 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try (PreparedStatement stmt = connect.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
     }
 
     @Override
-    public List<DataSet> getTableData(String tableName) {
+    public List<DataSet> getTableData(String tableName) throws SQLException {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName))
         {
@@ -92,12 +102,11 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
             return data;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return new LinkedList<DataSet>();
+            throw new SQLException(e.getMessage());
         }
     }
 
-    private int getSize(String tableName) {
+    private int getSize(String tableName) throws SQLException {
         try (Statement stmt = connect.createStatement();
              ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName))
         {
@@ -105,17 +114,16 @@ public class JDBCDatabaseManager implements DatabaseManager {
             int size = rsCount.getInt(1);
             return size;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
+            throw new SQLException(e.getMessage());
         }
     }
 
     @Override
-    public void update(String tableName, int id, DataSet newValue) {
+    public void update(String tableName, int id, DataSet newValue) throws SQLException {
         String[] name = newValue.getNames();
         Object[] value = newValue.getValues();
 
-        String setData = formaString(name, "%s = ?,");
+        String setData = formatString(name, "%s = ?,");
         try (PreparedStatement pstmt = connect.prepareStatement("UPDATE " + tableName
                                                                 + " SET " + setData
                                                                 + " WHERE id = " + id))
@@ -125,12 +133,12 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(e.getMessage());
         }
     }
 
     @Override
-    public List<String> getTableHeader(String tableName) {
+    public List<String> getTableHeader(String tableName) throws SQLException {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT column_name" +
                      " FROM information_schema.columns" +
@@ -143,8 +151,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
             return columnList;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            throw new SQLException(e.getMessage());
         }
     }
 
@@ -153,7 +160,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         return connect != null;
     }
 
-    private String formaString(String[] inputString, String formatType) {
+    private String formatString(String[] inputString, String formatType) {
         String string = "";
         for (int i = 0; i < inputString.length; i++) {
             string += String.format(formatType, inputString[i]);
