@@ -28,7 +28,7 @@ public class TestCreate {
 
     @Test
     public void testCreateCanProcessTrue() {
-        boolean canProcess = command.canProcess("create|users|id|12");
+        boolean canProcess = command.canProcess("insert|users|id|12");
         assertTrue(canProcess);
     }
 
@@ -47,7 +47,7 @@ public class TestCreate {
 
         Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
 
-        command.process("create|users|id|1|user|victor|password|123");
+        command.process("insert|users|id|1|user|victor|password|123");
         Mockito.verify(view, Mockito.atLeastOnce()).write("Данные успешно добавлены в таблтицу users");
     }
 
@@ -60,7 +60,7 @@ public class TestCreate {
 
         Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
         try {
-            command.process("create|users|id|1|user|victor|password|");
+            command.process("insert|users|id|1|user|victor|password|");
         } catch (IllegalArgumentException e) {
             assertEquals("Неверное количество введеных параметров", e.getMessage());
         }
@@ -76,7 +76,7 @@ public class TestCreate {
         Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
 
         try {
-            command.process("create|");
+            command.process("insert|");
             fail("Expected IllegalArgumentException.");
         } catch (IllegalArgumentException e) {
             assertEquals("Неверное количество введеных параметров", e.getMessage());

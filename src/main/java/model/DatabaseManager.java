@@ -12,7 +12,7 @@ public interface DatabaseManager {
 
     void clear(String tableName) throws SQLException;
 
-    void create(String tableName, DataSet input) throws SQLException;
+    void insert(String tableName, DataSet input) throws SQLException;
 
     List<DataSet> getTableData(String tableName) throws SQLException;
 
@@ -21,4 +21,12 @@ public interface DatabaseManager {
     List<String> getTableHeader(String tableName) throws SQLException;
 
     boolean isConnected();
+
+    void createDataBase(String dbName) throws Exception;
+
+    void createTable() throws SQLException;
+
+    void deleteDataBase(String dbName) throws Exception;
+
+    List<String> getListDataBase() throws Exception;
 }

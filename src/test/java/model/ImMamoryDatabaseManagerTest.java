@@ -35,7 +35,7 @@ public class ImMamoryDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create("users", input);
+        maneger.insert("users", input);
 
         //then
         List<DataSet> dataTable = maneger.getTableData("users");
@@ -53,7 +53,7 @@ public class ImMamoryDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create("users", input);
+        maneger.insert("users", input);
 
         //when
         DataSet newValue = new DataSet();

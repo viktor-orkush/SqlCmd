@@ -32,7 +32,7 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(String tableName, DataSet input) {
+    public void insert(String tableName, DataSet input) {
         dataList.add(input);
     }
 
@@ -58,5 +58,25 @@ public class InMamryDatabaseManager implements DatabaseManager {
     @Override
     public boolean isConnected() {
         return true;
+    }
+
+    @Override
+    public void createDataBase(String dbName) {
+
+    }
+
+    @Override
+    public void createTable() throws SQLException {
+
+    }
+
+    @Override
+    public void deleteDataBase(String dbName) throws Exception {
+
+    }
+
+    @Override
+    public List<String> getListDataBase() throws Exception {
+        return null;
     }
 }

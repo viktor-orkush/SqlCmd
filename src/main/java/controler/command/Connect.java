@@ -3,9 +3,6 @@ package controler.command;
 import model.DatabaseManager;
 import view.View;
 
-/**
- * Created by Viktor on 17.08.2017.
- */
 public class Connect implements Command {
     View view;
     DatabaseManager manager;

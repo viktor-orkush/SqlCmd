@@ -15,14 +15,40 @@ public class JDBCDatabaseManagerTest {
     @Before
     public void setup() throws Exception {
         maneger = new JDBCDatabaseManager();
-        maneger.connect("sqlcmd", "admin", "admin");
+        maneger.createDataBase("sqlcmd2");
+        maneger.connect("sqlcmd2", "admin", "admin");
+    }
+
+    /*@Test
+    public void testCreateDB() throws Exception {
+        maneger.createDataBase("sqlcmd2");
+        assertEquals("[postgres, sqlcmd, sqlcmd2]", maneger.getListDataBase().toString());
+    }*/
+
+    @Test
+    public void testDeleteDB() throws Exception {
+        maneger.deleteDataBase("sqlcmd2");
+        assertEquals("[postgres, sqlcmd]", maneger.getListDataBase().toString());
+    }
+
+    @Test
+    public void testCreateTable() throws SQLException {
+        maneger.createTable();
+        assertEquals("[postgres, sqlcmd]", maneger.getListTables().toString());
+    }
+
+    @Test
+    public void getListDataBase() throws Exception {
+        List<String> listDB = maneger.getListDataBase();
+        String actual = Arrays.toString(listDB.toArray());
+        assertEquals("[sqlcmd]", actual);
     }
 
     @Test
     public void getListTableTest() throws SQLException, ClassNotFoundException {
         List<String> listTable = maneger.getListTables();
         String actual = Arrays.toString(listTable.toArray());
-        assertEquals("[test, users]", actual);
+        assertEquals("[users]", actual);
     }
 
     @Test
@@ -35,7 +61,7 @@ public class JDBCDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create("users", input);
+        maneger.insert("users", input);
 
         //then
         List<DataSet> dataTable = maneger.getTableData("users");
@@ -53,7 +79,7 @@ public class JDBCDatabaseManagerTest {
         input.put("id", "13");
         input.put("name", "Victor");
         input.put("password", "123");
-        maneger.create("users", input);
+        maneger.insert("users", input);
 
         //when
         DataSet newValue = new DataSet();

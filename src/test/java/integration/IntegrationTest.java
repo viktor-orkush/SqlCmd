@@ -149,7 +149,7 @@ public class IntegrationTest {
 
         in.add("connect|sqlcmd|admin|admin");
         in.add("clear|users");
-        in.add("create|users|id|1|name|victor|password|123");
+        in.add("insert|users|id|1|name|victor|password|123");
         in.add("find|users");
         in.add("exit");
         //when

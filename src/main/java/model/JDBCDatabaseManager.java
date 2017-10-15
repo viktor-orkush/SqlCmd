@@ -1,13 +1,99 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
-    private static final String LOCAL_DB_ADDRESS = "127.0.0.1";
-    private static final String PORT = "5432";
+    private static final String URL = "jdbc:postgresql://127.0.0.1:5432";
+    public static final String PORT = "5432";
+    public static final String DATABASE = "sqlcmd";
+    public static final String USER = "postgres";
+    public static final String PASSWORD = "admin";
     private Connection connect;
+
+    public void createDataBase(String dbName) throws Exception {
+
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
+        }
+        try {
+            if (connect != null) {
+                connect.close();
+            }
+            connect = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            List<String> listDataBase = getListDataBase();
+
+            try (Statement statement = connect.createStatement()) {
+                if (listDataBase.contains(dbName)) throw new Exception("dbName " + dbName + " Already exist");
+                String sql = "CREATE DATABASE " + dbName + " WITH ENCODING='UTF8'";
+                statement.executeUpdate(sql);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            connect = null;
+            throw new SQLException(String.format("Cant get connection for model:%s user:%s", DATABASE, USER), e);
+        }
+    }
+
+    @Override
+    public void deleteDataBase(String dbName) throws Exception {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
+        }
+        try {
+            if (connect != null) {
+                connect.close();
+            }
+            connect = DriverManager.getConnection(URL, USER, PASSWORD);
+
+            List<String> listDataBase = getListDataBase();
+            try (Statement statement = connect.createStatement()) {
+                String sql = "DROP DATABASE " + dbName;
+                statement.executeUpdate(sql);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (SQLException e) {
+            connect = null;
+            throw new SQLException(String.format("Cant get connection for model:%s user:%s", DATABASE, USER), e);
+        }
+    }
+
+    @Override
+    public List<String> getListDataBase() throws Exception {
+        try (PreparedStatement ps = connect.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false");
+            ResultSet rs = ps.executeQuery()){
+
+            List<String> DBList = new ArrayList<>();
+            while (rs.next()) {
+                DBList.add(rs.getString(1));
+            }
+            return DBList;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
+    @Override
+    public void createTable() throws SQLException {
+        String sql = "CREATE TABLE IF NOT EXISTS users" +
+                "(id SERIAL NOT NULL PRIMARY KEY," +
+                "name varchar(225) NOT NULL UNIQUE," +
+                "password varchar(225)";
+        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
+    }
 
     public void connect(String database, String user, String password) throws ClassNotFoundException, SQLException {
         try {
@@ -16,11 +102,11 @@ public class JDBCDatabaseManager implements DatabaseManager {
             throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
         }
         try {
-            if(connect != null){
+            if (connect != null) {
                 connect.close();
             }
             database += "?loggerLevel=OFF";
-            connect = DriverManager.getConnection("jdbc:postgresql://" + LOCAL_DB_ADDRESS + ":" + PORT + "/" + database, user, password);
+            connect = DriverManager.getConnection(URL + "/" + database, user, password);
         } catch (SQLException e) {
             connect = null;
             throw new SQLException(String.format("Cant get connection for model:%s user:%s", database, user), e);
@@ -44,8 +130,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT table_name " +
                      "FROM information_schema.tables " +
-                     "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'"))
-        {
+                     "WHERE table_schema = 'public' AND table_type = 'BASE TABLE'")) {
             List<String> listTable = new LinkedList<>();
 
             while (rs.next()) {
@@ -61,7 +146,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
     @Override
     public void clear(String tableName) throws SQLException {
         String sql = "TRUNCATE  TABLE " + tableName;
-        try (PreparedStatement stmt = connect.prepareStatement(sql)){
+        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
@@ -69,13 +154,13 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(String tableName, DataSet input) throws SQLException {
-            String[] arrHeaderTables = input.getNames();
-            String headerTable = formatString(arrHeaderTables, "%s,");
-            String values = formatDS(input, "'%s',");
+    public void insert(String tableName, DataSet input) throws SQLException {
+        String[] arrHeaderTables = input.getNames();
+        String headerTable = formatString(arrHeaderTables, "%s,");
+        String values = formatDS(input, "'%s',");
 
-            String sql = "INSERT INTO " + tableName + "( " + headerTable + " ) "
-                    + "VALUES (" + values + ");";
+        String sql = "INSERT INTO " + tableName + "( " + headerTable + " ) "
+                + "VALUES (" + values + ");";
         try (PreparedStatement stmt = connect.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -86,8 +171,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
     @Override
     public List<DataSet> getTableData(String tableName) throws SQLException {
         try (Statement stmt = connect.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName))
-        {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM " + tableName)) {
             int size = getSize(tableName);
             List<DataSet> data = new LinkedList<>();
 
@@ -108,8 +192,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
     private int getSize(String tableName) throws SQLException {
         try (Statement stmt = connect.createStatement();
-             ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName))
-        {
+             ResultSet rsCount = stmt.executeQuery("SELECT COUNT(*) FROM " + tableName)) {
             rsCount.next();
             int size = rsCount.getInt(1);
             return size;
@@ -125,9 +208,8 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
         String setData = formatString(name, "%s = ?,");
         try (PreparedStatement pstmt = connect.prepareStatement("UPDATE " + tableName
-                                                                + " SET " + setData
-                                                                + " WHERE id = " + id))
-        {
+                + " SET " + setData
+                + " WHERE id = " + id)) {
             for (int i = 0; i < value.length; i++) {
                 pstmt.setObject(i + 1, value[i].toString());
             }
@@ -142,8 +224,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try (Statement stmt = connect.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT column_name" +
                      " FROM information_schema.columns" +
-                     " WHERE table_name   = '" + tableName + "'"))
-        {
+                     " WHERE table_name   = '" + tableName + "'")) {
             List<String> columnList = new LinkedList<>();
             while (rs.next()) {
                 String tableCol = rs.getString("column_name");
