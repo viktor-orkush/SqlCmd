@@ -17,6 +17,7 @@ public class JDBCDatabaseManagerTest {
         maneger = new JDBCDatabaseManager();
         maneger.createDataBase("sqlcmd2");
         maneger.connect("sqlcmd2", "admin", "admin");
+        maneger.createTable();
     }
 
     /*@Test
@@ -25,23 +26,23 @@ public class JDBCDatabaseManagerTest {
         assertEquals("[postgres, sqlcmd, sqlcmd2]", maneger.getListDataBase().toString());
     }*/
 
-    @Test
+ /*   @Test
     public void testDeleteDB() throws Exception {
         maneger.deleteDataBase("sqlcmd2");
         assertEquals("[postgres, sqlcmd]", maneger.getListDataBase().toString());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testCreateTable() throws SQLException {
         maneger.createTable();
-        assertEquals("[postgres, sqlcmd]", maneger.getListTables().toString());
-    }
+        assertEquals("[users]", maneger.getListTables().toString());
+    }*/
 
     @Test
     public void getListDataBase() throws Exception {
         List<String> listDB = maneger.getListDataBase();
         String actual = Arrays.toString(listDB.toArray());
-        assertEquals("[sqlcmd]", actual);
+        assertEquals("[postgres, sqlcmd, sqlcmd2]", actual);
     }
 
     @Test
@@ -66,8 +67,8 @@ public class JDBCDatabaseManagerTest {
         //then
         List<DataSet> dataTable = maneger.getTableData("users");
         assertEquals(1, dataTable.size());
-        assertEquals("[name, password, id]", Arrays.toString(dataTable.get(0).getNames()));
-        assertEquals("[Victor, 123, 13]", Arrays.toString(dataTable.get(0).getValues()));
+        assertEquals("[id, name, password]", Arrays.toString(dataTable.get(0).getNames()));
+        assertEquals("[13, Victor, 123]", Arrays.toString(dataTable.get(0).getValues()));
     }
 
     @Test
@@ -90,8 +91,8 @@ public class JDBCDatabaseManagerTest {
         //then
         List<DataSet> dataTable = maneger.getTableData("users");
         assertEquals(1, dataTable.size());
-        assertEquals("[name, password, id]", Arrays.toString(dataTable.get(0).getNames()));
-        assertEquals("[Victor, passNew, 13]", Arrays.toString(dataTable.get(0).getValues()));
+        assertEquals("[id, name, password]", Arrays.toString(dataTable.get(0).getNames()));
+        assertEquals("[13, Victor, passNew]", Arrays.toString(dataTable.get(0).getValues()));
     }
 
     @Test
@@ -104,6 +105,6 @@ public class JDBCDatabaseManagerTest {
 
         //then
         assertEquals(3, tableHeader.size());
-        assertEquals("[name, password, id]", Arrays.toString(tableHeader.toArray()));
+        assertEquals("[id, name, password]", Arrays.toString(tableHeader.toArray()));
     }
 }

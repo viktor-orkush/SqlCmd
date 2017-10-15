@@ -84,12 +84,12 @@ public class JDBCDatabaseManager implements DatabaseManager {
 
     @Override
     public void createTable() throws SQLException {
-        String sql = "CREATE TABLE IF NOT EXISTS users" +
-                "(id SERIAL NOT NULL PRIMARY KEY," +
-                "name varchar(225) NOT NULL UNIQUE," +
-                "password varchar(225)";
-        try (PreparedStatement stmt = connect.prepareStatement(sql)) {
-            stmt.executeUpdate();
+        try (Statement stmt = connect.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS users" +
+                    "(id SERIAL NOT NULL PRIMARY KEY," +
+                    "name varchar(225) NOT NULL," +
+                    "password varchar(225))";
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
         }
