@@ -13,17 +13,32 @@ public class JDBCDatabaseManager implements DatabaseManager {
     public static final String PASSWORD = "admin";
     private Connection connect;
 
-    public void createDataBase(String dbName) throws Exception {
+    @Override
+    public void connect(String database, String user, String password) throws ClassNotFoundException, SQLException {
+        plugJDBCjar();
+        try {
+            verifyConnect();
+            database += "?loggerLevel=OFF";
+            connect = DriverManager.getConnection(URL + "/" + database, user, password);
+        } catch (SQLException e) {
+            connect = null;
+            throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s", database, user), e.getMessage());
+        }
+    }
 
+    private void plugJDBCjar() throws ClassNotFoundException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
             throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
         }
+    }
+
+    @Override
+    public void createDataBase(String dbName) throws Exception {
+        plugJDBCjar();
         try {
-            if (connect != null) {
-                connect.close();
-            }
+            verifyConnect();
             connect = DriverManager.getConnection(URL, USER, PASSWORD);
 
             List<String> listDataBase = getListDataBase();
@@ -37,21 +52,15 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
         } catch (SQLException e) {
             connect = null;
-            throw new SQLException(String.format("Cant get connection for model:%s user:%s", DATABASE, USER), e);
+            throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s: ", DATABASE, USER), e.getMessage());
         }
     }
 
     @Override
     public void deleteDataBase(String dbName) throws Exception {
+        plugJDBCjar();
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
-        }
-        try {
-            if (connect != null) {
-                connect.close();
-            }
+            verifyConnect();
             connect = DriverManager.getConnection(URL, USER, PASSWORD);
 
             List<String> listDataBase = getListDataBase();
@@ -63,7 +72,13 @@ public class JDBCDatabaseManager implements DatabaseManager {
             }
         } catch (SQLException e) {
             connect = null;
-            throw new SQLException(String.format("Cant get connection for model:%s user:%s", DATABASE, USER), e);
+            throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s: ", DATABASE, USER), e.getMessage());
+        }
+    }
+
+    private void verifyConnect() throws SQLException {
+        if (connect != null) {
+            connect.close();
         }
     }
 
@@ -92,24 +107,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
-        }
-    }
-
-    public void connect(String database, String user, String password) throws ClassNotFoundException, SQLException {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
-        }
-        try {
-            if (connect != null) {
-                connect.close();
-            }
-            database += "?loggerLevel=OFF";
-            connect = DriverManager.getConnection(URL + "/" + database, user, password);
-        } catch (SQLException e) {
-            connect = null;
-            throw new SQLException(String.format("Cant get connection for model:%s user:%s", database, user), e);
         }
     }
 
