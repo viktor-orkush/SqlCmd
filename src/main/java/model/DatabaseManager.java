@@ -1,10 +1,12 @@
 package model;
 
+import model.exeption.DataBaseException;
+
 import java.sql.SQLException;
 import java.util.List;
 
 public interface DatabaseManager {
-    void connect(String database, String user, String password) throws Exception;
+    void connect(String database, String user, String password) throws ClassNotFoundException, SQLException;
 
     void disconnect() throws SQLException;
 
@@ -22,11 +24,13 @@ public interface DatabaseManager {
 
     boolean isConnected();
 
-    void createDataBase(String dbName) throws Exception;
+    void connect(String user, String password) throws ClassNotFoundException, SQLException;
+
+    void createDataBase(String dbName) throws DataBaseException, ClassNotFoundException, SQLException;
 
     void createTable() throws SQLException;
 
-    void deleteDataBase(String dbName) throws Exception;
+    void deleteDataBase(String dbName) throws SQLException, ClassNotFoundException, DataBaseException;
 
-    List<String> getListDataBase() throws Exception;
+    List<String> getListDataBase() throws SQLException;
 }

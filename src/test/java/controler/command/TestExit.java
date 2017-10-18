@@ -1,5 +1,9 @@
 package controler.command;
 
+import controller.command.Command;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
+import controller.command.Exit;
 import org.junit.Test;
 import org.mockito.Mockito;
 import view.View;
@@ -25,7 +29,7 @@ public class TestExit {
 
 
     @Test
-    public void testExitProcess(){
+    public void testExitProcess() throws ExitException, IncorrectInputArgumentException {
         try{
             command.process("exit");
         } catch(Exception e){

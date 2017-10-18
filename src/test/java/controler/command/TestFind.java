@@ -1,5 +1,9 @@
 package controler.command;
 
+import controller.command.Command;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
+import controller.command.Find;
 import model.DataSet;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +46,7 @@ public class TestFind {
     }
 
     @Test
-    public void testFindProcess() throws SQLException {
+    public void testFindProcess() throws SQLException, ExitException, IncorrectInputArgumentException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -80,7 +84,7 @@ public class TestFind {
     }
 
     @Test
-    public void testFindProcessWithoutParameters() throws SQLException {
+    public void testFindProcessWithoutParameters() throws SQLException, ExitException, IncorrectInputArgumentException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");

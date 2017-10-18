@@ -1,5 +1,9 @@
 package controler.command;
 
+import controller.command.Command;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
+import controller.command.List;
 import model.DatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +32,7 @@ public class TestList {
     }
 
     @Test
-    public void testListProcess() throws SQLException {
+    public void testListProcess() throws SQLException, ExitException, IncorrectInputArgumentException {
         java.util.List<String> tablesList = new LinkedList<>();
         tablesList.add("users");
         tablesList.add("test");
@@ -43,7 +47,7 @@ public class TestList {
     }
 
     @Test
-    public void testListProcessWithoutParameters() throws SQLException {
+    public void testListProcessWithoutParameters() throws SQLException, ExitException, IncorrectInputArgumentException {
 
         Mockito.when( manager.getListTables()).thenReturn(new LinkedList<>());
 

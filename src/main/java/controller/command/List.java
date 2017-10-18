@@ -1,4 +1,4 @@
-package controler.command;
+package controller.command;
 
 import model.DatabaseManager;
 import view.View;

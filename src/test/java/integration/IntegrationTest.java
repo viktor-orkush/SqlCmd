@@ -1,6 +1,6 @@
 package integration;
 
-import controler.Main;
+import controller.Main;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

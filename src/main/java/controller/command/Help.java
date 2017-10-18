@@ -1,4 +1,4 @@
-package controler.command;
+package controller.command;
 
 import view.View;
 

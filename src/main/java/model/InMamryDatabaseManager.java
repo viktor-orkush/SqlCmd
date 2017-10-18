@@ -1,5 +1,7 @@
 package model;
 
+import model.exeption.DataBaseException;
+
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,7 +63,12 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void createDataBase(String dbName) {
+    public void connect(String user, String password) throws ClassNotFoundException, SQLException {
+
+    }
+
+    @Override
+    public void createDataBase(String dbName) throws DataBaseException, ClassNotFoundException, SQLException {
 
     }
 
@@ -71,12 +78,13 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void deleteDataBase(String dbName) throws Exception {
+    public void deleteDataBase(String dbName) throws SQLException, ClassNotFoundException, DataBaseException {
 
     }
 
     @Override
-    public List<String> getListDataBase() throws Exception {
+    public List<String> getListDataBase() throws SQLException {
         return null;
     }
+
 }

@@ -1,5 +1,7 @@
 package model;
 
+import model.exeption.DataBaseException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,53 +28,48 @@ public class JDBCDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Override
+    public void connect(String user, String password) throws ClassNotFoundException, SQLException {
+        plugJDBCjar();
+        try {
+            verifyConnect();
+            String url = URL;// + "?loggerLevel=OFF";
+            connect = DriverManager.getConnection(URL, user, password);
+        } catch (SQLException e) {
+            connect = null;
+            throw new SQLException(String.format("Не получается подключиться к базе под юзером: %s: ", user), e.getMessage());
+        }
+    }
+
     private void plugJDBCjar() throws ClassNotFoundException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException("Подключите jdbc.jar драйвер до проекту!", e);
+            throw new ClassNotFoundException("Не удалось подключить jdbc.jar драйвер к проекту!", e);
         }
     }
 
     @Override
-    public void createDataBase(String dbName) throws Exception {
-        plugJDBCjar();
-        try {
-            verifyConnect();
-            connect = DriverManager.getConnection(URL, USER, PASSWORD);
+    public void createDataBase(String dbName) throws DataBaseException, ClassNotFoundException, SQLException {
+        if (getListDataBase().contains(dbName)) throw new DataBaseException(String.format("БД з таким именем: %s уже существует",dbName));
 
-            List<String> listDataBase = getListDataBase();
-
-            try (Statement statement = connect.createStatement()) {
-                if (listDataBase.contains(dbName)) throw new Exception("dbName " + dbName + " Already exist");
-                String sql = "CREATE DATABASE " + dbName + " WITH ENCODING='UTF8'";
-                statement.executeUpdate(sql);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+        try (Statement statement = connect.createStatement()) {
+            String sql = "CREATE DATABASE " + dbName + " WITH ENCODING='UTF8'";
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
-            connect = null;
-            throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s: ", DATABASE, USER), e.getMessage());
+            throw new SQLException(String.format("Не получается создать базуданых: %s", dbName), e.getMessage());
         }
     }
 
     @Override
-    public void deleteDataBase(String dbName) throws Exception {
-        plugJDBCjar();
-        try {
-            verifyConnect();
-            connect = DriverManager.getConnection(URL, USER, PASSWORD);
+    public void deleteDataBase(String dbName) throws SQLException, ClassNotFoundException, DataBaseException {
+        if (!getListDataBase().contains(dbName)) throw new DataBaseException("Такой БД не существует");
 
-            List<String> listDataBase = getListDataBase();
-            try (Statement statement = connect.createStatement()) {
-                String sql = "DROP DATABASE " + dbName;
-                statement.executeUpdate(sql);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+        try (Statement statement = connect.createStatement()) {
+            String sql = "DROP DATABASE " + dbName;
+            statement.executeUpdate(sql);
         } catch (SQLException e) {
-            connect = null;
-            throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s: ", DATABASE, USER), e.getMessage());
+            throw new SQLException(String.format("Не получается удалить базуданых: %s", dbName), e.getMessage());
         }
     }
 
@@ -83,17 +80,17 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public List<String> getListDataBase() throws Exception {
+    public List<String> getListDataBase() throws SQLException {
         try (PreparedStatement ps = connect.prepareStatement("SELECT datname FROM pg_database WHERE datistemplate = false");
-            ResultSet rs = ps.executeQuery()){
+             ResultSet rs = ps.executeQuery()) {
 
             List<String> DBList = new ArrayList<>();
             while (rs.next()) {
                 DBList.add(rs.getString(1));
             }
             return DBList;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
         }
     }
 

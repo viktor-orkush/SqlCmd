@@ -1,7 +1,9 @@
 package controler;
 
-import controler.command.Command;
-import controler.command.Find;
+import controller.command.Command;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
+import controller.command.Find;
 import model.DatabaseManager;
 import model.JDBCDatabaseManager;
 import org.junit.Before;
@@ -26,7 +28,7 @@ public class CommandTest {
     }
 
     @Test
-    public void findTest() {
+    public void findTest() throws ExitException, IncorrectInputArgumentException {
         Command command = new Find(view, maneger);
 
         String input = "find|users";

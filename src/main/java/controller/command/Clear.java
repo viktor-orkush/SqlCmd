@@ -1,13 +1,11 @@
-package controler.command;
+package controller.command;
 
+import controller.command.Exeption.IncorrectInputArgumentException;
 import model.DatabaseManager;
 import view.View;
 
 import java.sql.SQLException;
 
-/**
- * Created by Viktor on 16.09.2017.
- */
 public class Clear implements Command{
     private View view;
     private DatabaseManager manager;
@@ -23,9 +21,9 @@ public class Clear implements Command{
     }
 
     @Override
-    public void process(String command) {
+    public void process(String command) throws IncorrectInputArgumentException {
         String[] argumentArray = command.split("[|]");
-        if(argumentArray.length != 2) throw new IllegalArgumentException("Введено не правельное количество аргументов");
+        if(argumentArray.length != 2) throw new IncorrectInputArgumentException("Введено не верное количество аргументов");
         String tableName = argumentArray[1];
 
         try {

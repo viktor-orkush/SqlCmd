@@ -1,4 +1,4 @@
-package controler;
+package controller;
 
 import model.DatabaseManager;
 import model.JDBCDatabaseManager;
@@ -12,7 +12,7 @@ public class Main {
         View view = new Console();
         DatabaseManager manager = new JDBCDatabaseManager();
 
-        MainControler controler = new MainControler(view, manager);
-        controler.run();
+        MainController controller = new MainController(view, manager);
+        controller.run();
     }
 }

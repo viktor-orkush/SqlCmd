@@ -1,5 +1,9 @@
 package controler.command;
 
+import controller.command.Command;
+import controller.command.Insert;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
 import model.DatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +17,7 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
-public class TestCreate {
+public class TestInsert {
 
     private View view;
     private DatabaseManager manager;
@@ -23,7 +27,7 @@ public class TestCreate {
     public void setup() {
         view = Mockito.mock(View.class);
         manager = Mockito.mock(DatabaseManager.class);
-        command = new Create(view, manager);
+        command = new Insert(view, manager);
     }
 
     @Test
@@ -39,7 +43,7 @@ public class TestCreate {
     }
 
     @Test
-    public void testCreateProcess() throws SQLException {
+    public void testCreateProcess() throws SQLException, ExitException, IncorrectInputArgumentException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -52,7 +56,7 @@ public class TestCreate {
     }
 
     @Test
-    public void testCreateProcessWithoutOneParameters() throws SQLException {
+    public void testCreateProcessWithoutOneParameters() throws SQLException, ExitException, IncorrectInputArgumentException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -61,13 +65,13 @@ public class TestCreate {
         Mockito.when(manager.getTableHeader("users")).thenReturn(headerList);
         try {
             command.process("insert|users|id|1|user|victor|password|");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Неверное количество введеных параметров", e.getMessage());
+        } catch (IncorrectInputArgumentException e) {
+            assertEquals("Введено не верное количество аргументов", e.getMessage());
         }
     }
 
     @Test
-    public void testCreateProcessWithoutNameTable() throws SQLException {
+    public void testCreateProcessWithoutNameTable() throws SQLException, ExitException, IncorrectInputArgumentException {
         List<String> headerList = new LinkedList<>();
         headerList.add("id");
         headerList.add("name");
@@ -77,9 +81,9 @@ public class TestCreate {
 
         try {
             command.process("insert|");
-            fail("Expected IllegalArgumentException.");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Неверное количество введеных параметров", e.getMessage());
+            fail("Expected IncorrectInputArgumentException.");
+        } catch (IncorrectInputArgumentException e) {
+            assertEquals("Введено не верное количество аргументов", e.getMessage());
         }
     }
 }

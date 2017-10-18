@@ -1,5 +1,6 @@
-package controler.command;
+package controller.command;
 
+import controller.command.Exeption.IncorrectInputArgumentException;
 import model.DataSet;
 import model.DatabaseManager;
 import view.View;
@@ -24,11 +25,11 @@ public class Find implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process(String command) throws IncorrectInputArgumentException {
         String[] argumentArray = command.split("[|]");
 
         if (argumentArray.length != EXAMPLE_COMMAND_FIND.length)
-            throw new IllegalArgumentException("Введте название таблицы правильно");
+            throw new IncorrectInputArgumentException("Введено не верное количество аргументов");
 
         String tableName = argumentArray[1];
         try {

@@ -1,16 +1,16 @@
-package controler;
+package controller;
 
-import controler.command.*;
+import controller.command.*;
 import model.DatabaseManager;
 import view.View;
 
-public class MainControler {
+public class MainController {
     View view;
     Command[] commands;
 
     String input;
 
-    public MainControler(View view, DatabaseManager manager) {
+    public MainController(View view, DatabaseManager manager) {
         this.view = view;
         commands = new Command[]{
                 new Exit(view),
@@ -19,7 +19,7 @@ public class MainControler {
                 new IsConnected(view, manager),
                 new List(view, manager),
                 new Find(view, manager),
-                new Create(view, manager),
+                new Insert(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view, manager)};
     }
@@ -37,7 +37,9 @@ public class MainControler {
                 }
             }
         } catch (Exception e) {
-
+            String exception = "";
+            exception += e.getMessage();
+            view.write(exception);
         }
     }
 }

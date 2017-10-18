@@ -1,5 +1,6 @@
-package controler.command;
+package controller.command;
 
+import controller.command.Exeption.ExitException;
 import view.View;
 
 public class Exit implements Command {
@@ -16,8 +17,8 @@ public class Exit implements Command {
     }
 
     @Override
-    public void process(String command) {
+    public void process(String command) throws ExitException {
         view.write("До скорой встречи!");
-        throw new controler.command.ExitException();
+        throw new ExitException();
     }
 }
