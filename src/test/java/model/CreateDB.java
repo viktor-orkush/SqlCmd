@@ -2,7 +2,11 @@ package model;
 
 import java.sql.SQLException;
 
+import static model.MyProperties.*;
+
 public class CreateDB {
+//    private static final String USER_NAME = "postgres";
+//    private static final String PASSWORD = "admin";
     public static boolean isInitialized = false;
     public static DatabaseManager manager;
 
@@ -10,7 +14,7 @@ public class CreateDB {
         manager = new JDBCDatabaseManager();
         if (isInitialized) return;
         try {
-            manager.connect("postgres", "admin");
+            manager.connect(GLOBAL_USER_NAME, GLOBAL_PASSWORD);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
