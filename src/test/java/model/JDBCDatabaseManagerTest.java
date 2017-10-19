@@ -11,55 +11,40 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class JDBCDatabaseManagerTest {
-    DatabaseManager manager;
-    public static boolean isInitialized = false;
+    public DatabaseManager manager;
 
     @Before
-    public void setup() throws SQLException, ClassNotFoundException, DataBaseException {
+    public void setup() {
         manager = new JDBCDatabaseManager();
-        runOnceForSetingDB();
+        CreateDB.runOnceForSettingDB();
         try{
-            manager.connect("sqlcmd2", "admin", "admin");
-        }catch(Throwable e){
-            System.out.println(e.getMessage());
+            manager.connect("sqlcmd", "admin", "admin");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    private void runOnceForSetingDB() throws ClassNotFoundException, SQLException {
-        if(isInitialized) return;
-        manager.connect("postgres", "admin");
-        try {
-            manager.deleteDataBase("sqlcmd2");
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
-        }
-        try {
-            manager.createDataBase("sqlcmd2");
-        } catch (Throwable e) {
-            System.out.println(e.getMessage());
-        }
-        manager.connect("sqlcmd2", "admin", "admin");
-        manager.createTable();
-        isInitialized = true;
-    }
 
-    /*@Test
+
+    @Test
     public void testCreateDB() throws Exception {
         manager.createDataBase("sqlcmd2");
         assertEquals("[postgres, sqlcmd, sqlcmd2]", manager.getListDataBase().toString());
-    }*/
+    }
 
- /*   @Test
+   @Test
     public void testDeleteDB() throws Exception {
         manager.deleteDataBase("sqlcmd2");
         assertEquals("[postgres, sqlcmd]", manager.getListDataBase().toString());
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void testCreateTable() throws SQLException {
         manager.createTable();
         assertEquals("[users]", manager.getListTables().toString());
-    }*/
+    }
 
         @Test
         public void getListDataBase () throws Exception {
