@@ -2,11 +2,10 @@ package model;
 
 import java.sql.SQLException;
 
-import static model.MyProperties.*;
+import static model.MyPropertiesForTest.*;
+
 
 public class CreateDB {
-//    private static final String USER_NAME = "postgres";
-//    private static final String PASSWORD = "admin";
     public static boolean isInitialized = false;
     public static DatabaseManager manager;
 

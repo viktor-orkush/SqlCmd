@@ -8,11 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
-    private static final String URL = "jdbc:postgresql://127.0.0.1:5432";
-    public static final String PORT = "5432";
-    public static final String DATABASE = "sqlcmd";
-    public static final String USER = "postgres";
-    public static final String PASSWORD = "admin";
+    private static final String URL = new MyProperties().URL;
     private Connection connect;
 
     @Override
@@ -33,7 +29,6 @@ public class JDBCDatabaseManager implements DatabaseManager {
         plugJDBCjar();
         try {
             verifyConnect();
-            String url = URL;// + "?loggerLevel=OFF";
             connect = DriverManager.getConnection(URL, user, password);
         } catch (SQLException e) {
             connect = null;

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import static model.MyProperties.*;
+import static model.MyPropertiesForTest.*;
 import static org.junit.Assert.assertEquals;
 
 public class JDBCDatabaseManagerTest {
@@ -18,6 +18,7 @@ public class JDBCDatabaseManagerTest {
 
     @Before
     public void setup() {
+        MyPropertiesForTest.getProperties();
         manager = new JDBCDatabaseManager();
         CreateDB.runOnceForSettingDB();
         try {
