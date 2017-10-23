@@ -1,8 +1,10 @@
 package model;
 
 import model.exeption.DataBaseException;
+import model.exeption.TableException;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DatabaseManager {
@@ -28,9 +30,11 @@ public interface DatabaseManager {
 
     void createDataBase(String dbName) throws DataBaseException, ClassNotFoundException, SQLException;
 
-    void createTable() throws SQLException;
-
     void deleteDataBase(String dbName) throws SQLException, ClassNotFoundException, DataBaseException;
+
+    void createTable(String tableName, ArrayList<String> columnName, ArrayList<String> columnType) throws SQLException;
+
+    void deleteTable(String tableName) throws SQLException, TableException;
 
     List<String> getListDataBase() throws SQLException;
 }

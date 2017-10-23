@@ -27,7 +27,7 @@ public class CreateDB implements Command {
 
     @Override
     public void process(String command) throws IncorrectInputArgumentException, ExitException {
-        String[] splitReadLine = command.split("/|");
+        String[] splitReadLine = command.split("[|]");
         if(splitReadLine.length != parametersLength(EXAM_COMMAND)) throw new IncorrectInputArgumentException();
         String database = splitReadLine[1];
         try {

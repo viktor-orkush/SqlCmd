@@ -1,9 +1,11 @@
 package model;
 
+import model.exeption.TableException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,8 +46,22 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void testCreateTable() throws SQLException {
-        manager.createTable();
+    public void testCreateTB() throws SQLException {
+        String tableName = "test";
+        ArrayList<String> columnName = new ArrayList<>();
+        columnName.add("id");
+        columnName.add("name");
+
+        ArrayList<String> columnType = new ArrayList<>();
+        columnType.add("int");
+        columnType.add("varchar(50)");
+        manager.createTable(tableName, columnName, columnType);
+        assertEquals("[users, test]", manager.getListTables().toString());
+    }
+
+    @Test
+    public void testDeleteTB() throws SQLException, TableException {
+        manager.deleteTable("test");
         assertEquals("[users]", manager.getListTables().toString());
     }
 

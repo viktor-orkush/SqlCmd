@@ -1,6 +1,7 @@
 package model;
 
 import model.exeption.DataBaseException;
+import model.exeption.TableException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -90,15 +91,38 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public void createTable(String tableName, ArrayList<String> columnName, ArrayList<String> columnType) throws SQLException {
         try (Statement stmt = connect.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS users" +
-                    "(id SERIAL NOT NULL PRIMARY KEY," +
-                    "name varchar(225) NOT NULL," +
-                    "password varchar(225))";
+            String sql = "CREATE TABLE IF NOT EXISTS " + tableName;
+
+//                    "CREATE TABLE IF NOT EXISTS " + tableName +
+//                    "(id SERIAL NOT NULL PRIMARY KEY," +
+//                    "name varchar(225) NOT NULL," +
+//                    "password varchar(225))";
+            if(columnName.size() >= 1 && columnType.size() >=1 && columnName.size()== columnType.size()) {
+                sql += " (";
+                for (int index = 0; index < columnName.size(); index++) {
+                    if(index == 0) sql += " " + columnName.get(index) + " " + columnType.get(index)+ " NOT NULL PRIMARY KEY, ";
+                    else sql += " " + columnName.get(index) + " " + columnType.get(index) + ",";
+                }
+                sql = sql.substring(0, sql.length()-1);
+                sql += ")";
+            }
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void deleteTable(String tableName) throws SQLException, TableException {
+        if (!getListTables().contains(tableName)) throw new TableException("Такой таблицы не существует");
+
+        try (Statement statement = connect.createStatement()) {
+            String sql = "DROP TABLE " + tableName;
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new SQLException(String.format("Не получается удалить таблицу: %s", tableName), e.getMessage());
         }
     }
 

@@ -1,8 +1,10 @@
 package model;
 
 import model.exeption.DataBaseException;
+import model.exeption.TableException;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,7 +75,12 @@ public class InMamryDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void createTable() throws SQLException {
+    public void createTable(String tableName, ArrayList<String> columnName, ArrayList<String> columnType) throws SQLException {
+
+    }
+
+    @Override
+    public void deleteTable(String tableName) throws SQLException, TableException {
 
     }
 

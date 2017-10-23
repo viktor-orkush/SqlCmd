@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static model.MyPropertiesForTest.*;
 
@@ -31,7 +32,19 @@ public class CreateDB {
         }
         try {
             manager.connect("sqlcmd", "admin", "admin");
-            manager.createTable();
+
+            ArrayList<String> columnName = new ArrayList<>();
+            columnName.add("id");
+            columnName.add("name");
+            columnName.add("password");
+
+            ArrayList<String> columnType = new ArrayList<>();
+            columnType.add("int");
+            columnType.add("varchar(50)");
+            columnType.add("varchar(50)");
+
+
+            manager.createTable("users", columnName, columnType);
             manager.disconnect();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

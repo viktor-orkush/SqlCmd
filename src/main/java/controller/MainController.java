@@ -17,6 +17,8 @@ public class MainController {
                 new Help(view),
                 new Connect(view, manager),
                 new IsConnected(view, manager),
+                new CreateDB(view, manager),
+                new DeleteDB(view, manager),
                 new List(view, manager),
                 new Find(view, manager),
                 new Insert(view, manager),
