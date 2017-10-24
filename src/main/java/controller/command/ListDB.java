@@ -6,19 +6,19 @@ import view.View;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-public class List implements Command {
+public class ListDB implements Command {
 
     private View view;
     private DatabaseManager manager;
 
-    public List(View view, DatabaseManager manager) {
+    public ListDB(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
     }
 
     @Override
     public boolean canProcess(String command) {
-        return "list".equals(command);
+        return "listDB".equals(command);
     }
 
     @Override

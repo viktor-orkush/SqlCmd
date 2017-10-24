@@ -1,6 +1,6 @@
 package model;
 
-import model.exeption.TableException;
+import model.exeption.DeleteTableException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class JDBCDatabaseManagerTest {
     }
 
     @Test
-    public void testDeleteTB() throws SQLException, TableException {
+    public void testDeleteTB() throws SQLException, DeleteTableException {
         manager.deleteTable("test");
         assertEquals("[users]", manager.getListTables().toString());
     }

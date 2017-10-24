@@ -1,7 +1,7 @@
 package model;
 
 import model.exeption.DataBaseException;
-import model.exeption.TableException;
+import model.exeption.DeleteTableException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -115,8 +115,8 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void deleteTable(String tableName) throws SQLException, TableException {
-        if (!getListTables().contains(tableName)) throw new TableException("Такой таблицы не существует");
+    public void deleteTable(String tableName) throws SQLException, DeleteTableException {
+        if (!getListTables().contains(tableName)) throw new DeleteTableException("Такой таблицы не существует");
 
         try (Statement statement = connect.createStatement()) {
             String sql = "DROP TABLE " + tableName;

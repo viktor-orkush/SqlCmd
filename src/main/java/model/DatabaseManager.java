@@ -1,7 +1,7 @@
 package model;
 
 import model.exeption.DataBaseException;
-import model.exeption.TableException;
+import model.exeption.DeleteTableException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface DatabaseManager {
     void connect(String database, String user, String password) throws ClassNotFoundException, SQLException;
+
+    void connect(String user, String password) throws ClassNotFoundException, SQLException;
 
     void disconnect() throws SQLException;
 
@@ -26,15 +28,13 @@ public interface DatabaseManager {
 
     boolean isConnected();
 
-    void connect(String user, String password) throws ClassNotFoundException, SQLException;
-
     void createDataBase(String dbName) throws DataBaseException, ClassNotFoundException, SQLException;
 
     void deleteDataBase(String dbName) throws SQLException, ClassNotFoundException, DataBaseException;
 
     void createTable(String tableName, ArrayList<String> columnName, ArrayList<String> columnType) throws SQLException;
 
-    void deleteTable(String tableName) throws SQLException, TableException;
+    void deleteTable(String tableName) throws SQLException, DeleteTableException;
 
     List<String> getListDataBase() throws SQLException;
 }

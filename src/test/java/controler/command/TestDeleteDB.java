@@ -3,7 +3,7 @@ package controler.command;
 import controller.command.Command;
 import controller.command.Exeption.ExitException;
 import controller.command.Exeption.IncorrectInputArgumentException;
-import controller.command.List;
+import controller.command.ListTB;
 import model.DatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import view.View;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
@@ -26,7 +25,7 @@ public class TestDeleteDB {
         view = Mockito.mock(View.class);
         manager = Mockito.mock(DatabaseManager.class);
 
-        command = new List(view, manager);
+        command = new ListTB(view, manager);
     }
 
     @Test

@@ -3,7 +3,7 @@ package controler.command;
 import controller.command.Command;
 import controller.command.Exeption.ExitException;
 import controller.command.Exeption.IncorrectInputArgumentException;
-import controller.command.List;
+import controller.command.ListTB;
 import model.DatabaseManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
 
-public class TestList {
+public class TestListTB {
 
     private Command command;
     private DatabaseManager manager;
@@ -28,7 +28,7 @@ public class TestList {
         view = Mockito.mock(View.class);
         manager = Mockito.mock(DatabaseManager.class);
 
-        command = new List(view, manager);
+        command = new ListTB(view, manager);
     }
 
     @Test
