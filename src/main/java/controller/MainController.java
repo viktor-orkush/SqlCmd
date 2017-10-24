@@ -1,6 +1,8 @@
 package controller;
 
 import controller.command.*;
+import controller.command.Exeption.ExitException;
+import controller.command.Exeption.IncorrectInputArgumentException;
 import model.DatabaseManager;
 import view.View;
 
@@ -15,8 +17,7 @@ public class MainController {
         commands = new Command[]{
                 new Exit(view),
                 new Help(view),
-                new ConnectGlobal(view, manager),
-                new ConnectSpecificDB(view, manager),
+                new Connect(view, manager),
                 new IsConnected(view, manager),
                 new CreateDB(view, manager),
                 new CreateTB(view, manager),
@@ -31,9 +32,9 @@ public class MainController {
     }
 
     public void run() {
-        try {
-            while (true) {
-                view.write("Введите команду или help для помощи");
+        while (true) {
+            view.write("Введите команду или help для помощи");
+            try {
                 input = view.read();
                 for (Command command : commands) {
                     if (command.canProcess(input)) {
@@ -41,11 +42,13 @@ public class MainController {
                         break;
                     }
                 }
+            } catch (IncorrectInputArgumentException e) {
+                String exception = "";
+                exception += e.getMessage();
+                if(exception != null) view.write(exception);
+            } catch (ExitException e) {
+                System.exit(1);
             }
-        } catch (Exception e) {
-            String exception = "";
-            exception += e.getMessage();
-            view.write(exception);
         }
     }
 }

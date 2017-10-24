@@ -6,19 +6,20 @@ import view.View;
 
 import java.sql.SQLException;
 
-public class ConnectGlobal implements Command {
+public class Connect implements Command {
     View view;
     DatabaseManager manager;
-    private static final String EXAM_COMMAND = "connect|user|pass|db";
+    private static final String EXAM_COMMAND_GLOBAL_DB = "connect|user|pass";
+    private static final String EXAM_COMMAND_SPESHEL_DB = "connect|user|pass|db";
 
-    public ConnectGlobal(View view, DatabaseManager manager) {
+    public Connect(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
     }
 
     @Override
     public boolean canProcess(String command) {
-        return command.startsWith("connect");
+        return command.startsWith("connect|");
     }
 
     @Override
@@ -27,13 +28,21 @@ public class ConnectGlobal implements Command {
         String user = "";
         String pass = "";
         String[] splitReadLine = command.split("[|]");
-        if (splitReadLine.length < parametersLength(EXAM_COMMAND))
+
+        if (splitReadLine.length < parametersLength(EXAM_COMMAND_GLOBAL_DB) || splitReadLine.length > parametersLength(EXAM_COMMAND_SPESHEL_DB))
             throw new IncorrectInputArgumentException("Введено не верное количество аргументов");
         try {
-            database = splitReadLine[1];
-            user = splitReadLine[2];
-            pass = splitReadLine[3];
-            manager.connect(database, user, pass);
+            if(splitReadLine.length == parametersLength(EXAM_COMMAND_GLOBAL_DB)){
+                user = splitReadLine[1];
+                pass = splitReadLine[2];
+                manager.connect(user, pass);
+            }
+            if(splitReadLine.length == parametersLength(EXAM_COMMAND_SPESHEL_DB)){
+                database = splitReadLine[1];
+                user = splitReadLine[2];
+                pass = splitReadLine[3];
+                manager.connect(database, user, pass);
+            }
             view.write("Привет " + user);
         } catch (SQLException | ClassNotFoundException e) {
             view.write("Не удача по причине " + e.getMessage());
