@@ -23,12 +23,12 @@ public class ListDB implements Command {
 
     @Override
     public void process(String command) {
-        java.util.List<String> tableList = null;
+        java.util.List<String> dbList = null;
         try {
-            tableList = manager.getListTables();
-            view.write(Arrays.toString(tableList.toArray()));
+            dbList = manager.getListDataBase();
+            view.write(Arrays.toString(dbList.toArray()));
         } catch (SQLException e) {
-            view.write("Не удалось получить список таблиц по причине: " + e.getMessage());
+            view.write("Не удалось получить список БД по причине: " + e.getMessage());
         }
     }
 }
