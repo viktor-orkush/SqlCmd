@@ -1,6 +1,7 @@
 package controler.command;
 
 import controller.command.Command;
+import controller.command.DeleteDB;
 import controller.command.Exeption.ExitException;
 import controller.command.Exeption.IncorrectInputArgumentException;
 import controller.command.ListTB;
@@ -21,11 +22,11 @@ public class TestDeleteDB {
     private View view;
 
     @Before
-    public void setup(){
+    public void setup() {
         view = Mockito.mock(View.class);
         manager = Mockito.mock(DatabaseManager.class);
 
-        command = new ListTB(view, manager);
+        command = new DeleteDB(view, manager);
     }
 
     @Test
@@ -43,7 +44,7 @@ public class TestDeleteDB {
     @Test
     public void testDeleteDBProcess() throws ExitException, IncorrectInputArgumentException {
         command.process("deleteDB|users");
-        Mockito.verify(view, Mockito.atLeastOnce()).write("");
+        Mockito.verify(view, Mockito.atLeastOnce()).write("База данных успешно удалена");
     }
 
     @Test
@@ -51,17 +52,17 @@ public class TestDeleteDB {
         try {
             command.process("deleteDB|users|2");
         } catch (IncorrectInputArgumentException e) {
-            assertEquals("", e.getMessage());
+            assertEquals("Введено не верное количество аргументов", e.getMessage());
         } catch (ExitException e) {
             e.printStackTrace();
         }
     }
 
     @Test
-    public void testCreateProcessWithoutNameTable() throws SQLException, ExitException, IncorrectInputArgumentException {
+    public void testCreateProcessWithoutNameTable() throws SQLException, ExitException {
         try {
             command.process("deleteDB|");
-            fail("Expected IncorrectInputArgumentException.");
+            fail("Expected IncorrectInputArgumentException");
         } catch (IncorrectInputArgumentException e) {
             assertEquals("Введено не верное количество аргументов", e.getMessage());
         }

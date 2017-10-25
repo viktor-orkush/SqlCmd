@@ -32,23 +32,25 @@ public class MainController {
     }
 
     public void run() {
-        while (true) {
-            view.write("Введите команду или help для помощи");
-            try {
-                input = view.read();
-                for (Command command : commands) {
-                    if (command.canProcess(input)) {
-                        command.process(input);
-                        break;
+        try {
+            while (true) {
+                view.write("Введите команду или help для помощи");
+                try {
+                    input = view.read();
+                    for (Command command : commands) {
+                        if (command.canProcess(input)) {
+                            command.process(input);
+                            break;
+                        }
                     }
+                } catch (IncorrectInputArgumentException e) {
+                    String exception = "";
+                    exception += e.getMessage();
+                    if (exception != null) view.write(exception);
                 }
-            } catch (IncorrectInputArgumentException e) {
-                String exception = "";
-                exception += e.getMessage();
-                if(exception != null) view.write(exception);
-            } catch (ExitException e) {
-                System.exit(1);
             }
+        } catch (ExitException e) {
+            //System.exit(2);
         }
     }
 }

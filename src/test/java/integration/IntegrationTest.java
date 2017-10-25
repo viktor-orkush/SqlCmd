@@ -65,7 +65,7 @@ public class IntegrationTest {
             e.printStackTrace();
         }
         in.add("connect|sqlcmd|admin|admin");
-        in.add("list");
+        in.add("listTB");
         in.add("exit");
         //when
         Main.main(new String[0]);
@@ -74,7 +74,7 @@ public class IntegrationTest {
                 "Введите команду или help для помощи\r\n" +
                         "Привет admin\r\n"+
                         "Введите команду или help для помощи\r\n" +
-                        "[test, users]\r\n" +
+                        "[users]\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }
@@ -85,7 +85,7 @@ public class IntegrationTest {
         clear();
         in.add("connect|sqlcmd|admin|admin");
         in.add("clear|users");
-        in.add("list");
+        in.add("listTB");
         in.add("find|users");
         in.add("exit");
         //when
@@ -97,10 +97,10 @@ public class IntegrationTest {
                         "Введите команду или help для помощи\r\n"+
                         "Данные из таблици users успешго очищены!\r\n"+
                         "Введите команду или help для помощи\r\n" +
-                        "[test, users]\r\n" +
+                        "[users]\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "---------------------------\r\n"+
-                        "name| password| id| \r\n"+
+                        "id| name| password| \r\n"+
                         "---------------------------\r\n"+
                         "Введите команду или help для помощи\r\n"+
                         "До скорой встречи!\r\n", getData());
@@ -133,13 +133,15 @@ public class IntegrationTest {
         //given
         clear();
         in.add("connect|sqlcmdsdf|admin|admin");
+        in.add("exit");
         //when
         Main.main(new String[0]);
         //then
         assertEquals("Введите команду или help для помощи\r\n" +
-                "Не удача по причине Cant get connection for model:sqlcmdsdf?loggerLevel=OFF user:admin \r\n" +
-                "Повтори попитку\r\n" +
-                "Введите команду или help для помощи\r\n", getData());
+                "Не удача по причине Не получается подключиться к базе: sqlcmdsdf?loggerLevel=OFF под юзером: admin\r\n" +
+                "Повторите попытку\r\n" +
+                "Введите команду или help для помощи\r\n" +
+                "До скорой встречи!\r\n", getData());
     }
 
     @Test
@@ -164,9 +166,9 @@ public class IntegrationTest {
                         "Данные успешно добавлены в таблтицу users\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "---------------------------\r\n" +
-                        "name| password| id| \r\n" +
+                        "id| name| password| \r\n" +
                         "---------------------------\r\n" +
-                        "victor| 123| 1| \r\n" +
+                        "1| victor| 123| \r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }

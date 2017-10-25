@@ -34,10 +34,22 @@ public class Help implements Command{
         view.write("\tclear|table");
         view.write("\t\tочистить данные с таблицы");
 
+        view.write("\tcreateDB|nameDB");
+        view.write("\t\tсоздать базу данных");
+
+        view.write("\tcreateTB|nameTable");
+        view.write("\t\tсоздать таблицу");
+
+        view.write("\tdeleteDB|nameDB");
+        view.write("\t\tудалить базу дынных");
+
+        view.write("\tdeleteTB|nameTable");
+        view.write("\t\tудалить таблицу");
+
         view.write("\thelp");
-        view.write("\t\tдля вывода этого списка на экран");
+        view.write("\t\tвывод списка возможних команд");
 
         view.write("\texit");
-        view.write("\t\tдля выхода из программы");
+        view.write("\t\tвыход из программы");
     }
 }

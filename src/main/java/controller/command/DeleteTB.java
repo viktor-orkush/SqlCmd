@@ -30,9 +30,8 @@ public class DeleteTB implements Command {
         String tableName = splitReadLine[1];
         try {
             manager.deleteTable(tableName);
-        } catch (SQLException e) {
-            view.write(e.getMessage());
-        } catch (DeleteTableException e) {
+            view.write("Таблица успешно удалена");
+        } catch (SQLException | DeleteTableException e) {
             view.write(e.getMessage());
         }
     }

@@ -22,7 +22,7 @@ public class JDBCDatabaseManagerTest {
     public void setup() {
         MyPropertiesForTest.getProperties();
         manager = new JDBCDatabaseManager();
-        CreateDB.runOnceForSettingDB();
+        //CreateDB.runOnceForSettingDB();
         try {
             manager.connect(DB_NAME, DB_USER_NAME, DB_PASSWORD);
         } catch (SQLException e) {
@@ -69,14 +69,14 @@ public class JDBCDatabaseManagerTest {
     public void getListDataBase() throws Exception {
         List<String> listDB = manager.getListDataBase();
         String actual = Arrays.toString(listDB.toArray());
-        assertEquals("[postgres, sqlcmd]", actual);
+        assertEquals("[postgres, sqlcmd, sqlcmd2]", actual);
     }
 
     @Test
     public void getListTableTest() throws SQLException, ClassNotFoundException {
         List<String> listTable = manager.getListTables();
         String actual = Arrays.toString(listTable.toArray());
-        assertEquals("[users]", actual);
+        assertEquals("[users, test]", actual);
     }
 
     @Test

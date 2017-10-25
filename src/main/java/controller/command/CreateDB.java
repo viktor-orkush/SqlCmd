@@ -32,11 +32,8 @@ public class CreateDB implements Command {
         String database = splitReadLine[1];
         try {
             manager.createDataBase(database);
-        } catch (DataBaseException e) {
-            view.write(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            view.write(e.getMessage());
-        } catch (SQLException e) {
+            view.write("Базаданных успешно создана");
+        } catch (DataBaseException | ClassNotFoundException | SQLException e) {
             view.write(e.getMessage());
         }
         view.write(String.format("База данных %s успешно создана ", database));

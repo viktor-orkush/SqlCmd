@@ -37,6 +37,7 @@ public class CreateTB implements Command {
         }
         try {
             manager.createTable(tableName, columnName, columnType);
+            view.write("Таблица успешно создана");
         } catch (SQLException e) {
             view.write(e.getMessage());
         }
