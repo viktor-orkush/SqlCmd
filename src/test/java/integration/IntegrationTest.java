@@ -3,7 +3,9 @@ package integration;
 import controller.Main;
 import model.MyPropertiesForTest;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 
 import static org.junit.Assert.assertEquals;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class IntegrationTest {
     MyPropertiesForTest prop = MyPropertiesForTest.instance();
 
@@ -210,7 +213,7 @@ public class IntegrationTest {
                 "Введите команду или help для помощи\r\n" +
                         "Привет " + prop.GLOBAL_USER_NAME + "\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "Таблица testTB успешно создана\r\n" +
+                        "Таблица testtb успешно создана\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }
@@ -230,7 +233,7 @@ public class IntegrationTest {
                 "Введите команду или help для помощи\r\n" +
                         "Привет " + prop.GLOBAL_USER_NAME + "\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "Данные из таблици users успешго очищены!\r\n" +
+                        "Таблица testtb успешно удалена \r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }

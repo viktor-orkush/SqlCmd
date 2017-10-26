@@ -65,7 +65,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             String sql = "DROP DATABASE " + dbName;
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(String.format("Не получается удалить базуданых: %s", dbName), e.getMessage());
+            throw new SQLException(String.format("Не получается удалить базуданых: %s по причине " + e.getMessage(), dbName));
         }
     }
 
