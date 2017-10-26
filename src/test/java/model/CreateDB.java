@@ -3,10 +3,8 @@ package model;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static model.MyPropertiesForTest.*;
-
-
 public class CreateDB {
+    private static MyPropertiesForTest prop = MyPropertiesForTest.instance();
     public static boolean isInitialized = false;
     public static DatabaseManager manager;
 
@@ -14,7 +12,7 @@ public class CreateDB {
         manager = new JDBCDatabaseManager();
         if (isInitialized) return;
         try {
-            manager.connect(GLOBAL_USER_NAME, GLOBAL_PASSWORD);
+            manager.connect(prop.GLOBAL_USER_NAME, prop.GLOBAL_PASSWORD);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

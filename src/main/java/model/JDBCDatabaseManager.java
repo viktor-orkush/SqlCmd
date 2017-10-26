@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
-    private static final String URL = new MyProperties().URL;
+    private MyProperties prop = MyProperties.instance();
     private Connection connect;
 
     @Override
@@ -18,7 +18,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try {
             verifyConnect();
             database += "?loggerLevel=OFF";
-            connect = DriverManager.getConnection(URL + "/" + database, user, password);
+            connect = DriverManager.getConnection(prop.URL + "/" + database, user, password);
         } catch (SQLException e) {
             connect = null;
             throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s", database, user), e.getMessage());
@@ -30,7 +30,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
         plugJDBCjar();
         try {
             verifyConnect();
-            connect = DriverManager.getConnection(URL, user, password);
+            connect = DriverManager.getConnection(prop.URL, user, password);
         } catch (SQLException e) {
             connect = null;
             throw new SQLException(String.format("Не получается подключиться к базе под юзером: %s: ", user), e.getMessage());
@@ -102,7 +102,7 @@ public class JDBCDatabaseManager implements DatabaseManager {
             if(columnName.size() >= 1 && columnType.size() >=1 && columnName.size()== columnType.size()) {
                 sql += " (";
                 for (int index = 0; index < columnName.size(); index++) {
-                    if(index == 0) sql += " " + columnName.get(index) + " " + columnType.get(index)+ " NOT NULL PRIMARY KEY, ";
+                    if(index == 0) sql += " " + columnName.get(index) + " " + columnType.get(index)+ " NOT NULL PRIMARY KEY,";
                     else sql += " " + columnName.get(index) + " " + columnType.get(index) + ",";
                 }
                 sql = sql.substring(0, sql.length()-1);

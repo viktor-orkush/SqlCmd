@@ -19,7 +19,7 @@ public class CreateTB implements Command {
 
     @Override
     public boolean canProcess(String command) {
-        return command.startsWith("create|");
+        return command.startsWith("createTB|");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CreateTB implements Command {
         }
         try {
             manager.createTable(tableName, columnName, columnType);
-            view.write("Таблица успешно создана");
+            view.write(String.format("Таблица %s успешно создана ", tableName));
         } catch (SQLException e) {
             view.write(e.getMessage());
         }

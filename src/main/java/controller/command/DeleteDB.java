@@ -30,7 +30,7 @@ public class DeleteDB implements Command {
         String database = splitReadLine[1];
         try {
             manager.deleteDataBase(database);
-            view.write("База данных успешно удалена");
+            view.write(String.format("База данных %s успешно удалена ", database));
         } catch (SQLException | ClassNotFoundException | DataBaseException e) {
             view.write(e.getMessage());
         }

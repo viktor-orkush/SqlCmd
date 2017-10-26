@@ -9,22 +9,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static model.MyPropertiesForTest.*;
 import static org.junit.Assert.assertEquals;
 
 public class JDBCDatabaseManagerTest {
-//    private static final String DB_NAME = "sqlcmd";
-//    private static final String USER_NAME_TO_DB = "admin";
-//    private static final String PASSWORD_TO_DB = "admin";
     public DatabaseManager manager;
 
     @Before
     public void setup() {
-        MyPropertiesForTest.getProperties();
+        MyPropertiesForTest prop = MyPropertiesForTest.instance();
         manager = new JDBCDatabaseManager();
         //CreateDB.runOnceForSettingDB();
         try {
-            manager.connect(DB_NAME, DB_USER_NAME, DB_PASSWORD);
+            manager.connect(prop.DB_NAME, prop.DB_USER_NAME, prop.DB_PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
