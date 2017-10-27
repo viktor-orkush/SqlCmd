@@ -89,7 +89,7 @@ public class IntegrationTest {
         //given
         clear();
         in.add("connect|" + prop.DB_NAME + "|" + prop.DB_USER_NAME +"|"+ prop.DB_PASSWORD);
-        in.add("clear|users");
+        //in.add("clear|users");
         in.add("listTB");
         in.add("find|users");
         in.add("exit");

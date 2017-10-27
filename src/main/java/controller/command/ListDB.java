@@ -26,7 +26,7 @@ public class ListDB implements Command {
         java.util.List<String> dbList = null;
         try {
             dbList = manager.getListDataBase();
-            view.write(Arrays.toString(dbList.toArray()));
+            view.write("Список БД", dbList);
         } catch (SQLException e) {
             view.write("Не удалось получить список БД по причине: " + e.getMessage());
         }

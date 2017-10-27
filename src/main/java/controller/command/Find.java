@@ -33,41 +33,35 @@ public class Find implements Command {
 
         String tableName = argumentArray[1];
         try {
-            printTableHeader(tableName);
-            printTableValues(tableName);
+            String[] tableHeader = getStrArrTableHeader(tableName);
+            Object[][] tableData = getObjArrTableValues(tableName);
+            view.write(tableHeader, tableData);
         } catch (SQLException e) {
             view.write(String.format("Не удалось получить данные таблицы %s по причине: ", tableName) + e.getMessage());
         }
     }
 
-    private void printTableHeader(String tableName) throws SQLException {
+    private String[] getStrArrTableHeader(String tableName) throws SQLException {
         List<String> tableHeader = null;
         tableHeader = manager.getTableHeader(tableName);
         if (tableHeader.size() == 0) throw new IllegalArgumentException();
-        String printValues = "";
-        for (String header : tableHeader) {
-            printValues += header + "| ";
+        String[] headerArr = new String[tableHeader.size()];
+        for (int i = 0; i < tableHeader.size(); i++) {
+            headerArr[i] = tableHeader.get(i);
         }
-        view.write("---------------------------");
-        view.write(printValues);
-        view.write("---------------------------");
-
+        return headerArr;
     }
 
-    private void printTableValues(String tableName) throws SQLException {
+    private Object[][] getObjArrTableValues(String tableName) throws SQLException {
         List<DataSet> tableData = null;
         tableData = manager.getTableData(tableName);
-        for (DataSet data : tableData) {
-            printRow(data);
+        if (tableData.size() == 0) return  new Object[0][0];
+        int columnLength = tableData.get(0).getNames().length;
+        int rowLength = tableData.size();
+        Object[][] dataObj = new Object[rowLength][columnLength];
+        for (int i = 0; i < tableData.size(); i++) {
+            dataObj[i] = tableData.get(i).getValues();
         }
-    }
-
-    private void printRow(DataSet tableData) {
-        Object[] tableValues = tableData.getValues();
-        String printValues = "";
-        for (int j = 0; j < tableValues.length; j++) {
-            printValues += tableValues[j] + "| ";
-        }
-        view.write(printValues);
+        return (Object[][]) dataObj;
     }
 }

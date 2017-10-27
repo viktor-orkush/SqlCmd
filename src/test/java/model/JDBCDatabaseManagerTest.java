@@ -76,18 +76,6 @@ public class JDBCDatabaseManagerTest {
         List<String> listTable = manager.getListTables();
         String actual = Arrays.toString(listTable.toArray());
         assertEquals("[users]", actual);
-
-        String[] headers = { "Test", "Header" };
-        String[][] data = {
-                { "Foo", "Bar" },
-                { "Kit", "Kat" },
-        };
-
-        TextTable tt = new TextTable(headers, data);
-        tt.setAddRowNumbering(true);
-        //tt.setSort(0);
-
-        tt.printTable(System.out,0);
     }
 
     @Test
