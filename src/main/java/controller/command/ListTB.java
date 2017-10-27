@@ -1,5 +1,6 @@
 package controller.command;
 
+import dnl.utils.text.table.TextTable;
 import model.DatabaseManager;
 import view.View;
 
@@ -26,7 +27,7 @@ public class ListTB implements Command {
         java.util.List<String> tableList = null;
         try {
             tableList = manager.getListTables();
-            view.write(Arrays.toString(tableList.toArray()));
+            view.write("Список таблиц", tableList);
         } catch (SQLException e) {
             view.write("Не удалось получить список таблиц по причине: " + e.getMessage());
         }

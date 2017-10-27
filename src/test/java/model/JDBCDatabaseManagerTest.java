@@ -1,9 +1,12 @@
 package model;
 
+import dnl.utils.text.table.TextTable;
 import model.exeption.DeleteTableException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,7 +75,19 @@ public class JDBCDatabaseManagerTest {
     public void getListTableTest() throws SQLException, ClassNotFoundException {
         List<String> listTable = manager.getListTables();
         String actual = Arrays.toString(listTable.toArray());
-        assertEquals("[users, test]", actual);
+        assertEquals("[users]", actual);
+
+        String[] headers = { "Test", "Header" };
+        String[][] data = {
+                { "Foo", "Bar" },
+                { "Kit", "Kat" },
+        };
+
+        TextTable tt = new TextTable(headers, data);
+        tt.setAddRowNumbering(true);
+        //tt.setSort(0);
+
+        tt.printTable(System.out,0);
     }
 
     @Test
