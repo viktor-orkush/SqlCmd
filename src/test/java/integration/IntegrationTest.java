@@ -79,7 +79,10 @@ public class IntegrationTest {
                 "Введите команду или help для помощи\r\n" +
                         "Привет admin\r\n"+
                         "Введите команду или help для помощи\r\n" +
-                        "[users]\r\n" +
+                        "   _______________\r\n" +
+                        "   | Список таблиц|\r\n" +
+                        "   |==============|\r\n" +
+                        "1. | users        |\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }
@@ -89,7 +92,7 @@ public class IntegrationTest {
         //given
         clear();
         in.add("connect|" + prop.DB_NAME + "|" + prop.DB_USER_NAME +"|"+ prop.DB_PASSWORD);
-        //in.add("clear|users");
+        in.add("clear|users");
         in.add("listTB");
         in.add("find|users");
         in.add("exit");
@@ -107,9 +110,9 @@ public class IntegrationTest {
                         "   |==============|\r\n" +
                         "1. | users        |\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "---------------------------\r\n"+
-                        "id| name| password| \r\n"+
-                        "---------------------------\r\n"+
+                        "   ____________________\r\n" +
+                        "   | id| name| password|\r\n" +
+                        "   |===================|\r\n"+
                         "Введите команду или help для помощи\r\n"+
                         "До скорой встречи!\r\n", getData());
     }
@@ -173,10 +176,10 @@ public class IntegrationTest {
                         "Введите команду или help для помощи\r\n" +
                         "Данные успешно добавлены в таблтицу users\r\n" +
                         "Введите команду или help для помощи\r\n" +
-                        "---------------------------\r\n" +
-                        "id| name| password| \r\n" +
-                        "---------------------------\r\n" +
-                        "1| victor| 123| \r\n" +
+                        "   ______________________\r\n" +
+                        "   | id| name  | password|\r\n" +
+                        "   |=====================|\r\n" +
+                        "1. | 1 | victor| 123     |\r\n" +
                         "Введите команду или help для помощи\r\n" +
                         "До скорой встречи!\r\n", getData());
     }
