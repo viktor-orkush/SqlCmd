@@ -21,7 +21,7 @@ public class JDBCDatabaseManagerTest {
     public void setup() {
         MyPropertiesForTest prop = MyPropertiesForTest.instance();
         manager = new JDBCDatabaseManager();
-        //CreateDB.runOnceForSettingDB();
+        CreateDB.runOnceForSettingDB();
         try {
             manager.connect(prop.DB_NAME, prop.DB_USER_NAME, prop.DB_PASSWORD);
         } catch (SQLException e) {
