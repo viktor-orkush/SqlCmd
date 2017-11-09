@@ -8,6 +8,14 @@
     <artifactId>sqlcmd</artifactId>
     <version>1.0</version>
 
+    <packaging>war</packaging>
+    <name>sqlcmd</name>
+    <description>juja-sqlcmd</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>postgresql</groupId>
