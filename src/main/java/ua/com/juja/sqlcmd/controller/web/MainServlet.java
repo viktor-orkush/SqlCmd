@@ -11,11 +11,18 @@ import java.io.IOException;
 
 public class MainServlet extends HttpServlet {
 
+    private Service service;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        service = new ServiceImpl();
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Service service = new ServiceImpl();
         String action = getAction(request);
 
-        if(action.startsWith("/menu")){
+        if(action.startsWith("/menu") || action.equals("/")){
             request.setAttribute("items", service.commandList());
             request.getRequestDispatcher("menu.jsp").forward(request, response);
         }
@@ -36,18 +43,20 @@ public class MainServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Service service = new ServiceImpl();
         String action = getAction(request);
 
         if (action.startsWith("/connect")) {
-            String dbName = (String) request.getAttribute("dbName");
-            String username = (String) request.getAttribute("username");
-            String password = (String) request.getAttribute("password");
-
+            String dbName = (String) request.getParameter("dbname");
+            String username = (String) request.getParameter("username");
+            String password = (String) request.getParameter("password");
             try {
                 service.connect(dbName, username, password);
+//                service.connect("sqlcmd", "admin", "admin");
+                request.getRequestDispatcher("menu.jsp").forward(request, response);
             } catch (Exception e) {
-                e.printStackTrace();
+                 request.setAttribute("exception", e.getMessage());
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+//                e.printStackTrace();
             }
         }
     }

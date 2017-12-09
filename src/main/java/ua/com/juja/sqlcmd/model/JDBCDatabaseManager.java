@@ -18,7 +18,8 @@ public class JDBCDatabaseManager implements DatabaseManager {
         try {
             verifyConnect();
             database += "?loggerLevel=OFF";
-            connect = DriverManager.getConnection(prop.URL + "/" + database, user, password);
+            String URL = prop.URL;
+            connect = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/" + database, user, password);
         } catch (SQLException e) {
             connect = null;
             throw new SQLException(String.format("Не получается подключиться к базе: %s под юзером: %s", database, user), e.getMessage());

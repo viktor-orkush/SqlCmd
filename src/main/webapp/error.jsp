@@ -4,7 +4,8 @@
     <title>error</title>
 </head>
 <body>
-        ERROR!!!!!!!!!!!!
-        <a href="menu">
+        Something wrong!!!!!!!!!!!!
+        ${exception}
+        <a href="menu">Меню</a>>
 </body>
 </html>
