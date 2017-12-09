@@ -24,6 +24,7 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -31,17 +32,23 @@
         </dependency>
 
         <dependency>
-            <groupId>javaee</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>5</version>
-        </dependency>
-        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.glassfish.main.extras</groupId>
+            <artifactId>glassfish-embedded-all</artifactId>
+            <version>3.1.2.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+
+
+        <!--*********************************************************************************************-->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -95,7 +102,7 @@
                 <version>2.2</version>
                 <configuration>
                     <port>8080</port>
-                    <path>/sqlcmd</path>
+                    <path>/</path>
                 </configuration>
             </plugin>
         </plugins>
